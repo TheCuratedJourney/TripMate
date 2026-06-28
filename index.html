@@ -536,7 +536,36 @@ let syncTimer=null;
 
 // ════ PERSISTENCE ════
 function load(){
-  try{const r=localStorage.getItem('tripmate_v5');if(r)Object.assign(APP,JSON.parse(r))}catch(e){}
+  try{
+    // Try current key first
+    const r=localStorage.getItem('tripmate_v5');
+    if(r){Object.assign(APP,JSON.parse(r));return;}
+    // Migrate from any previous version
+    const oldRaw=localStorage.getItem('tripmate_sync_v1')
+      ||localStorage.getItem('tripmate_v4')
+      ||localStorage.getItem('tripmate_v3')
+      ||localStorage.getItem('tripmate_v2')
+      ||localStorage.getItem('tripmate_v1');
+    if(!oldRaw)return;
+    const old=JSON.parse(oldRaw);
+    // Carry over credentials and user
+    if(old.cloudApiKey)APP.cloudApiKey=old.cloudApiKey;
+    if(old.cloudBinId)APP.cloudBinId=old.cloudBinId;
+    if(old.activeUser)APP.activeUser=old.activeUser;
+    if(old.travellers)APP.travellers=old.travellers;
+    // Wrap old single-trip data into a trip object
+    if(old.itinerary||old.expenses){
+      const trip=newTripObj(old.tripName||'My Trip',old.tripStart||'',old.tripEnd||'');
+      trip.itinerary=old.itinerary||[];
+      trip.expenses=old.expenses||[];
+      if(old.rates)trip.rates=old.rates;
+      APP.trips=[trip];
+      APP.activeTripId=trip.id;
+      APP.currentViewTripId=trip.id;
+    }
+    // Persist migrated data under new key
+    localStorage.setItem('tripmate_v5',JSON.stringify(APP));
+  }catch(e){console.warn('Load error:',e)}
 }
 function save(){
   try{localStorage.setItem('tripmate_v5',JSON.stringify(APP));if(APP.cloudApiKey&&APP.cloudBinId)debouncedSync()}
@@ -607,6 +636,11 @@ function handleSyncTap(){
 }
 async function syncToCloud(){
   if(!APP.cloudApiKey||!APP.cloudBinId)return;
+  // Safety guard: never push empty trips before we have pulled at least once
+  if(!APP.cloudLastSync&&APP.trips.length===0){
+    console.log('Skipping push — no trips and never synced. Will pull instead.');
+    syncFromCloud(false);return;
+  }
   setSyncStatus('syncing');
   try{
     const payload={trips:APP.trips,travellers:APP.travellers,activeTripId:APP.activeTripId,lastModified:Date.now(),lastModifiedBy:APP.activeUser};
@@ -622,8 +656,22 @@ async function syncFromCloud(showToast=true){
     const r=await fetch(`${CLOUD_BASE}/b/${APP.cloudBinId}/latest`,{headers:{'X-Master-Key':APP.cloudApiKey}});
     if(r.ok){
       const data=await r.json();const cloud=data.record;
-      const keep={activeUser:APP.activeUser,cloudApiKey:APP.cloudApiKey,cloudBinId:APP.cloudBinId,hasExported:APP.hasExported,currentViewTripId:APP.currentViewTripId};
-      Object.assign(APP,cloud,keep);APP.cloudLastSync=Date.now();
+      const keep={activeUser:APP.activeUser,cloudApiKey:APP.cloudApiKey,cloudBinId:APP.cloudBinId,hasExported:APP.hasExported};
+      if(cloud.trips){
+        // New multi-trip format
+        Object.assign(APP,cloud,keep);
+        // Restore current view to active trip if not set
+        if(!APP.currentViewTripId&&APP.activeTripId)APP.currentViewTripId=APP.activeTripId;
+      }else if(cloud.itinerary||cloud.expenses){
+        // Old single-trip format from bin — wrap it
+        const trip=newTripObj(cloud.tripName||'My Trip',cloud.tripStart||'',cloud.tripEnd||'');
+        trip.itinerary=cloud.itinerary||[];trip.expenses=cloud.expenses||[];
+        if(cloud.rates)trip.rates=cloud.rates;
+        if(cloud.travellers)APP.travellers=cloud.travellers;
+        APP.trips=[trip];APP.activeTripId=trip.id;APP.currentViewTripId=trip.id;
+        Object.assign(APP,keep);
+      }
+      APP.cloudLastSync=Date.now();
       localStorage.setItem('tripmate_v5',JSON.stringify(APP));
       setSyncStatus('ok');renderApp();
       if(showToast)toast(`Synced${cloud.lastModifiedBy?' · '+cloud.lastModifiedBy:''} ✓`);
@@ -859,20 +907,20 @@ async function saveLibSync(){
   if(!key){toast('Please enter your API Key');return}
   if(!bin){toast('Please enter your Trip Code');return}
   APP.cloudApiKey=key;APP.cloudBinId=bin;
-  save();
-  toast('Saved — syncing now...');
+  // Save credentials locally WITHOUT triggering a push to cloud
+  // (we don't want to overwrite cloud data with our empty state)
+  clearTimeout(syncTimer);
+  localStorage.setItem('tripmate_v5',JSON.stringify(APP));
+  toast('Credentials saved — pulling from cloud...');
   await syncFromCloud(true);
-  // If a trip loaded, open it
+  // If a trip loaded successfully, jump straight into it
   const aTrip=APP.trips.find(t=>t.id===APP.activeTripId&&t.status==='active');
   if(aTrip){
     APP.currentViewTripId=APP.activeTripId;
     VIEW='active';ACTIVE_TAB='itinerary';
-    closeModal('modalLibSettings');
-    renderApp();
-  }else{
-    closeModal('modalLibSettings');
-    renderApp();
   }
+  closeModal('modalLibSettings');
+  renderApp();
 }
 
 // ════ LIBRARY VIEW ════
@@ -1507,8 +1555,18 @@ function init(){
   } else if(!APP.activeUser){
     setTimeout(openUserModal,400);
   }
-  // Cloud sync on open
-  if(APP.cloudApiKey&&APP.cloudBinId)setTimeout(()=>syncFromCloud(false),1200);
+  // Cloud sync on open — pull latest, then jump to active trip if one loads
+  if(APP.cloudApiKey&&APP.cloudBinId){
+    setTimeout(async()=>{
+      await syncFromCloud(false);
+      const aTrip=APP.trips.find(t=>t.id===APP.activeTripId&&t.status==='active');
+      if(aTrip&&VIEW==='library'){
+        APP.currentViewTripId=APP.activeTripId;
+        VIEW='active';ACTIVE_TAB='itinerary';
+        renderApp();
+      }
+    },800);
+  }
 }
 init();
 </script>
