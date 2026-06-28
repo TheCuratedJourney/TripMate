@@ -2,26 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>TripMate</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0F2340;--ember:#E87F3A;--vellum:#F5F0E8;--white:#FFFFFF;--slate:#7B8794;--dark:#1A1A2E;--border:#E2DDD5;--green:#1A9E6E;--red:#D63B3B}
+:root{--navy:#0F2340;--ember:#E87F3A;--vellum:#F5F0E8;--white:#FFFFFF;--slate:#7B8794;--dark:#1A1A2E;--border:#E2DDD5;--green:#1A9E6E;--red:#D63B3B;--blue:#1D6FD4;--purple:#6D3FC7}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark);min-height:100svh;max-width:480px;margin:0 auto;overflow-x:hidden}
-.app-header{background:var(--navy);padding:14px 16px 12px;position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center}
-.hdr-title{font-family:'Playfair Display',serif;font-size:19px;color:#fff;letter-spacing:-.3px}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px}
-.user-chip{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 12px 5px 8px;cursor:pointer;color:#fff;font-size:12px;font-weight:500}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-top:1px solid var(--border);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px 7px;border:none;background:none;cursor:pointer;color:var(--slate);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;gap:3px;transition:color .15s}
+/* HEADER */
+#appHeader{position:sticky;top:0;z-index:50}
+.hdr-active{background:var(--navy);padding:12px 16px 10px;display:flex;justify-content:space-between;align-items:center}
+.hdr-lib{background:var(--navy);padding:20px 20px 16px}
+.hdr-archived{background:#2D1A4A;padding:12px 16px 10px;display:flex;justify-content:space-between;align-items:center}
+.hdr-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;letter-spacing:-.3px}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.hdr-lib-title{font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:4px}
+.hdr-lib-sub{font-size:13px;color:rgba(255,255,255,.5)}
+.hdr-right{display:flex;align-items:center;gap:7px}
+.user-chip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px 4px 7px;cursor:pointer;color:#fff;font-size:12px;font-weight:500}
+.sync-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:5px 9px;cursor:pointer;color:#fff;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;white-space:nowrap}
+.sync-btn.ok{border-color:rgba(26,158,110,.5);background:rgba(26,158,110,.15)}
+.sync-btn.syncing{border-color:rgba(29,111,212,.5);background:rgba(29,111,212,.15)}
+.sync-btn.error{border-color:rgba(214,59,59,.4);background:rgba(214,59,59,.12)}
+.back-btn{background:rgba(255,255,255,.12);border:none;border-radius:10px;padding:6px 12px;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600}
+/* NAV */
+#appNav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-top:1px solid var(--border);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px 6px;border:none;background:none;cursor:pointer;color:var(--slate);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;gap:3px;transition:color .15s}
 .nav-btn.active{color:var(--navy)}
 .nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
-.main-content{padding:12px 12px 86px}
-.tab-panel{display:none}.tab-panel.active{display:block}
-.fab{position:fixed;bottom:70px;right:16px;background:var(--ember);color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(232,127,58,.45);display:flex;align-items:center;justify-content:center;z-index:40;transition:transform .15s}
-.fab:active{transform:scale(.93)}
-@media(min-width:480px){.fab{right:calc(50vw - 224px)}}
+/* MAIN */
+#appMain{padding:12px 12px 84px;min-height:calc(100svh - 60px)}
+/* FAB */
+#fabBtn{position:fixed;bottom:70px;right:16px;background:var(--ember);color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(232,127,58,.45);display:flex;align-items:center;justify-content:center;z-index:40;transition:transform .15s}
+#fabBtn:active{transform:scale(.93)}
+@media(min-width:480px){#fabBtn{right:calc(50vw - 224px)}}
+/* MODALS */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);z-index:100;display:flex;align-items:flex-end;justify-content:center}
 .modal-sheet{background:var(--white);border-radius:22px 22px 0 0;width:100%;max-width:480px;max-height:93svh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom,0px),16px)}
 .modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 2px}
@@ -29,52 +44,110 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
 .modal-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy)}
 .modal-close{width:30px;height:30px;background:var(--vellum);border:none;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dark)}
 .modal-body{padding:12px 16px 6px}
-.fg{margin-bottom:13px}
+/* FORMS */
+.fg{margin-bottom:12px}
 .flabel{display:block;font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-.flabel .req{color:var(--ember)}
+.req{color:var(--ember)}
 .finput,.fselect,.ftextarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--dark);background:var(--white);transition:border-color .18s;-webkit-appearance:none;appearance:none}
 .finput:focus,.fselect:focus,.ftextarea:focus{outline:none;border-color:var(--navy)}
-.ftextarea{resize:vertical;min-height:68px}
+.ftextarea{resize:vertical;min-height:72px}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .frow .fg{margin-bottom:0}
 .ifields{display:none}.ifields.show{display:block}
 .pill-group{display:flex;gap:7px;flex-wrap:wrap}
 .pill{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s;user-select:none}
-.pill input{display:none}
-.pill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pill input{display:none}.pill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-lbl{font-size:14px;color:var(--dark)}
+.toggle-sw{position:relative;width:44px;height:26px;flex-shrink:0}
+.toggle-sw input{opacity:0;width:0;height:0}
+.toggle-sw .sl{position:absolute;inset:0;background:#E2DDD5;border-radius:26px;transition:.3s;cursor:pointer}
+.toggle-sw input:checked+.sl{background:var(--navy)}
+.toggle-sw .sl::before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-sw input:checked+.sl::before{transform:translateX(18px)}
+/* BUTTONS */
 .btn-primary{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn-primary:active{opacity:.85}
 .btn-ghost{width:100%;padding:12px;background:transparent;color:var(--red);border:1.5px solid #F5CDCD;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px}
 .btn-outline{width:100%;padding:12px;background:var(--vellum);color:var(--navy);border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-sm{padding:8px 16px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.btn-sm-out{padding:8px 14px;background:var(--vellum);color:var(--navy);border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
+/* TRIP LIBRARY */
+.lib-trips-section{margin-bottom:20px}
+.lib-section-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);margin-bottom:10px}
+.trip-card{background:var(--white);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 1px 5px rgba(15,35,64,.08);cursor:pointer;transition:transform .12s;display:flex;justify-content:space-between;align-items:center}
+.trip-card:active{transform:scale(.98)}
+.trip-card-left{}
+.trip-card-name{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:3px}
+.trip-card-dates{font-size:12px;color:var(--slate);margin-bottom:4px}
+.trip-card-meta{font-size:11px;color:var(--slate)}
+.trip-status-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap}
+.badge-active{background:#EEF6F0;color:#157A56}
+.badge-archived{background:#F3EEF9;color:#6D3FC7}
+.new-trip-btn{width:100%;padding:16px;background:var(--ember);color:#fff;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:20px}
+/* DAY CARDS */
 .day-card{background:var(--white);border-radius:14px;margin-bottom:10px;box-shadow:0 1px 5px rgba(15,35,64,.08);overflow:hidden}
-.day-card-head{background:var(--navy);padding:10px 14px}
-.day-head-row{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
-.day-num{font-size:10px;font-weight:700;letter-spacing:.8px;color:rgba(255,255,255,.45);text-transform:uppercase}
+.day-card-head{padding:10px 14px}
+.day-card-head.active-head{background:var(--navy)}
+.day-card-head.archived-head{background:#2D1A4A}
+.day-head-row{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.day-num{font-size:10px;font-weight:700;letter-spacing:.8px;color:rgba(255,255,255,.4);text-transform:uppercase}
 .day-date{font-family:'Playfair Display',serif;font-size:15px;color:#fff}
-.day-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.city-badge{font-size:11px;color:rgba(255,255,255,.9);background:rgba(255,255,255,.12);border-radius:8px;padding:2px 8px}
-.hotel-badge{font-size:11px;color:rgba(255,255,255,.65)}
-.no-hotel{font-size:11px;color:rgba(255,255,255,.3);font-style:italic}
+.day-meta-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.city-badge{font-size:11px;color:rgba(255,255,255,.9);background:rgba(255,255,255,.13);border-radius:8px;padding:2px 8px}
+.hotel-badge{font-size:11px;color:rgba(255,255,255,.6)}
+.no-hotel{font-size:11px;color:rgba(255,255,255,.25);font-style:italic}
 .event-row{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
 .event-row:last-child{border-bottom:none}
 .event-row:active{background:var(--vellum)}
-.event-time{width:56px;font-size:11px;font-weight:600;color:var(--navy);flex-shrink:0;padding-top:2px}
+.event-time{width:54px;font-size:11px;font-weight:600;color:var(--navy);flex-shrink:0;padding-top:2px}
 .event-info{flex:1;min-width:0}
 .event-title{font-size:13px;font-weight:600;line-height:1.35}
 .event-detail{font-size:11px;color:var(--slate);margin-top:2px;line-height:1.4}
+.rt-stop-mini{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--slate);padding:3px 0 3px 6px;border-left:2px solid var(--border)}
+.rt-stop-mini.possible{opacity:.6;font-style:italic}
 .day-add{padding:9px 14px;text-align:center;font-size:12px;color:var(--slate);cursor:pointer;border-top:1px dashed var(--border)}
 .day-empty{padding:14px;text-align:center;font-size:13px;color:var(--slate)}
+/* ROAD TRIP BUILDER */
+.rt-stop-card{background:var(--vellum);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1.5px solid var(--border)}
+.rt-stop-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.rt-stop-type{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:var(--white);-webkit-appearance:none;appearance:none}
+.rt-stop-rm{background:none;border:none;color:var(--slate);cursor:pointer;font-size:18px;padding:4px;flex-shrink:0}
+.rt-maybe-lbl{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--slate);cursor:pointer;white-space:nowrap}
+.rt-maybe-lbl input{width:16px;height:16px;cursor:pointer}
+/* OVERVIEW BANNER */
 .overview-banner{background:var(--navy);border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:12px;position:relative;overflow:hidden}
 .overview-banner::after{content:'✈';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:52px;opacity:.07}
 .ov-dates{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:3px}
 .ov-meta{font-size:11px;opacity:.55}
+/* MEMORY CARDS */
+.memory-day-card{background:var(--white);border-radius:14px;margin-bottom:12px;box-shadow:0 1px 5px rgba(15,35,64,.08);overflow:hidden}
+.memory-day-head{background:#2D1A4A;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.memory-day-date{font-family:'Playfair Display',serif;font-size:14px;color:#fff}
+.memory-day-rating{font-size:13px;color:rgba(255,255,255,.8)}
+.memory-body{padding:14px}
+.memory-highlight{font-size:14px;line-height:1.6;color:var(--dark);margin-bottom:10px;font-style:italic}
+.memory-photo-link{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--blue);font-weight:500;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:10px;cursor:pointer;text-decoration:none}
+.memory-ratings{display:flex;flex-wrap:wrap;gap:8px}
+.rating-chip{background:var(--vellum);border-radius:8px;padding:5px 10px;font-size:12px}
+.memory-empty{padding:14px;color:var(--slate);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.memory-edit-btn{font-size:12px;color:var(--navy);background:var(--vellum);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+/* STAR RATING */
+.stars{display:flex;gap:4px}
+.star{font-size:22px;cursor:pointer;color:#D1D5DB;transition:color .1s}
+.star.on{color:#F59E0B}
+.rating-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.rating-row:last-child{border-bottom:none}
+.rating-name{font-size:14px;font-weight:500}
+/* EXPENSES */
 .sum-strip{background:var(--navy);border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:12px;display:flex;justify-content:space-between}
 .sum-lbl{font-size:10px;opacity:.6;font-weight:600;letter-spacing:.5px;margin-bottom:3px;text-transform:uppercase}
 .sum-val{font-family:'Playfair Display',serif;font-size:22px}
 .sum-sub{font-size:11px;opacity:.5;margin-top:2px}
 .exp-item{background:var(--white);border-radius:12px;margin-bottom:9px;box-shadow:0 1px 4px rgba(15,35,64,.07);display:flex;overflow:hidden;cursor:pointer}
 .exp-bar{width:6px;flex-shrink:0}
-.exp-body{flex:1;padding:12px 13px;display:flex;align-items:center;gap:11px}
+.exp-body{flex:1;padding:11px 13px;display:flex;align-items:center;gap:10px}
 .exp-icon{font-size:20px;flex-shrink:0}
 .exp-info{flex:1;min-width:0}
 .exp-desc{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -82,12 +155,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
 .exp-right{text-align:right;flex-shrink:0}
 .exp-amt{font-weight:700;font-size:15px;color:var(--navy)}
 .exp-sgd{font-size:11px;color:var(--slate);margin-top:1px}
-.bal-card{background:var(--white);border-radius:12px;padding:13px 16px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(15,35,64,.07)}
+/* SETTLE */
+.bal-card{background:var(--white);border-radius:12px;padding:12px 16px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(15,35,64,.07)}
 .bal-name{font-weight:600;font-size:14px}
 .bal-status{font-size:11px;color:var(--slate);margin-top:1px}
 .bal-amt{font-weight:700;font-size:16px}
 .pos{color:var(--green)}.neg{color:var(--red)}.zero{color:var(--slate)}
-.txn-item{background:var(--white);border-radius:11px;padding:11px 15px;margin-bottom:8px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 4px rgba(15,35,64,.07);font-size:13px}
+.txn-item{background:var(--white);border-radius:11px;padding:10px 15px;margin-bottom:8px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 4px rgba(15,35,64,.07);font-size:13px}
 .txn-arrow{color:var(--ember);font-size:16px}
 .txn-amt{margin-left:auto;font-weight:700;color:var(--navy);font-size:14px}
 .cat-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
@@ -95,74 +169,43 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
 .bar-bg{flex:1;height:5px;background:var(--vellum);border-radius:3px;overflow:hidden}
 .bar-fill{height:100%;border-radius:3px}
 .cat-amt{font-size:12px;font-weight:600;color:var(--navy);flex-shrink:0;min-width:55px;text-align:right}
+/* SETTINGS */
 .settings-card{background:var(--white);border-radius:14px;padding:2px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,35,64,.06)}
-.s-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.s-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
 .s-row:last-child{border-bottom:none}
 .s-lbl{font-size:14px;font-weight:500;flex:1}
 .s-input{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:8px 11px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--dark)}
 .s-input:focus{outline:none;border-color:var(--navy)}
-.s-rate{border:1.5px solid var(--border);border-radius:9px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:14px;text-align:right;color:var(--dark);-webkit-appearance:none}
+.s-rate{border:1.5px solid var(--border);border-radius:9px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:14px;text-align:right;color:var(--dark);-webkit-appearance:none;width:90px}
 .s-rate:focus{outline:none;border-color:var(--navy)}
+/* CURRENCY PICKER */
+.cur-list{max-height:320px;overflow-y:auto}
+.cur-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.cur-item:last-child{border-bottom:none}
+.cur-item.active-cur{opacity:.4;cursor:default}
+.cur-sym{width:36px;font-size:16px;font-weight:700;color:var(--navy);flex-shrink:0;text-align:center}
+.cur-name-wrap .cur-code{font-size:14px;font-weight:600}
+.cur-name-wrap .cur-full{font-size:12px;color:var(--slate)}
+/* USER PICKER */
 .user-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 20px}
-.user-opt{background:var(--vellum);border:2px solid transparent;border-radius:14px;padding:20px 10px 16px;text-align:center;cursor:pointer;transition:all .15s}
-.user-opt:hover,.user-opt:active{border-color:var(--navy);background:#fff}
-.uav{font-size:34px;margin-bottom:7px}
-.unm{font-weight:600;font-size:14px}
+.user-opt{background:var(--vellum);border:2px solid transparent;border-radius:14px;padding:18px 10px 14px;text-align:center;cursor:pointer;transition:all .15s}
+.user-opt:active{border-color:var(--navy);background:#fff}
+.uav{font-size:32px;margin-bottom:6px}.unm{font-weight:600;font-size:14px}
+/* MISC */
 .sec-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);margin:16px 0 10px}
 .sec-title:first-child{margin-top:0}
 .empty{text-align:center;padding:40px 20px;color:var(--slate)}
 .empty .eico{font-size:38px;margin-bottom:10px}
 .empty p{font-size:14px;line-height:1.6}
-.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;max-width:90vw}
+.toast{position:fixed;top:68px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;font-weight:500;z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;max-width:90vw}
 .toast.show{opacity:1}
-.sync-bar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border-radius:8px;padding:5px 10px;margin-top:4px}
-.nudge-banner{background:#FFF8EC;border:1.5px solid #F5D78E;border-radius:12px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.info-box{background:#EEF6F0;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#2D4A38;line-height:1.6}
+.warn-box{background:#FFF8EC;border:1.5px solid #F5D78E;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#92600A;line-height:1.6}
 </style>
 </head>
 <body>
 
-<!-- BACKUP MODAL -->
-<div id="modalBackup" class="modal-overlay" style="display:none">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title">💾 Save &amp; Share</span><button class="modal-close" onclick="closeModal('modalBackup')">✕</button></div>
-    <div class="modal-body">
-      <div style="background:#EEF6F0;border-radius:12px;padding:14px;margin-bottom:16px">
-        <div style="font-weight:600;font-size:14px;color:#157A56;margin-bottom:6px">⚠️ How saving works</div>
-        <p style="font-size:13px;color:#2D4A38;line-height:1.6">Data auto-saves to your browser. To avoid losing it, <strong>export a backup</strong> after each session and share with the group so everyone stays in sync.</p>
-      </div>
-      <button class="btn-primary" onclick="exportData();closeModal('modalBackup')">📤 Export backup (JSON file)</button>
-      <div style="margin-top:12px"><div style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Restore from backup</div>
-      <button class="btn-outline" onclick="document.getElementById('bkImport').click()">📥 Import backup file</button>
-      <input type="file" id="bkImport" accept=".json" style="display:none" onchange="importData(this);closeModal('modalBackup')"></div>
-      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--slate);line-height:1.6">
-        💡 <strong>Tip:</strong> Send the exported file on WhatsApp to your group. They import it to sync all data instantly.
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TRIP SETUP MODAL -->
-<div id="modalTripDates" class="modal-overlay" style="display:none">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title">Set Up Your Trip</span></div>
-    <div class="modal-body">
-      <p style="font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:14px">Enter your trip window once — all date pickers will be locked to these dates.</p>
-      <div class="fg"><label class="flabel">Trip Name</label>
-        <input class="finput" id="tdName" type="text" placeholder="e.g. Scotland & Faroe Islands 2025"></div>
-      <div class="fg"><label class="flabel">Start Date</label>
-        <input class="finput" id="tdStart" type="date" style="font-size:16px"
-          onchange="const e=document.getElementById('tdEnd');if(!e.value)e.value=this.value"></div>
-      <div class="fg"><label class="flabel">End Date</label>
-        <input class="finput" id="tdEnd" type="date" style="font-size:16px"></div>
-      <button class="btn-primary" onclick="saveTripDates()">Let's go! 🗺️</button>
-      <button class="btn-outline" onclick="closeModal('modalTripDates')">Skip for now</button>
-    </div>
-  </div>
-</div>
-
-<!-- USER PICKER MODAL -->
+<!-- USER PICKER -->
 <div id="modalUser" class="modal-overlay" style="display:none">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -172,75 +215,193 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
   </div>
 </div>
 
+<!-- NEW TRIP MODAL -->
+<div id="modalNewTrip" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title" id="newTripTitle">New Trip</span><button class="modal-close" onclick="closeModal('modalNewTrip')">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="fg"><label class="flabel">Trip Name</label><input class="finput" id="ntName" type="text" placeholder="e.g. Scotland &amp; Faroe Islands 2025"></div>
+      <div class="fg"><label class="flabel">Start Date</label><input class="finput" id="ntStart" type="date" style="font-size:16px" onchange="var e=document.getElementById('ntEnd');if(!e.value)e.value=this.value"></div>
+      <div class="fg"><label class="flabel">End Date</label><input class="finput" id="ntEnd" type="date" style="font-size:16px"></div>
+      <button class="btn-primary" onclick="saveNewTrip()">Create Trip &#x2192;</button>
+      <button class="btn-outline" onclick="closeModal('modalNewTrip')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHIVE CONFIRM MODAL -->
+<div id="modalArchive" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title">Archive this trip?</span><button class="modal-close" onclick="closeModal('modalArchive')">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="warn-box">&#x26A0;&#xFE0F; <strong>This is a shared trip.</strong> Archiving makes the itinerary and expenses read-only for everyone. You can undo this at any time from the Trip Library.</div>
+      <div class="info-box">Once archived, a Memories view opens so you can add highlights, photo links and ratings for each day.</div>
+      <div class="fg"><label class="flabel">Type <strong>ARCHIVE</strong> to confirm</label><input class="finput" id="archiveConfirmInput" type="text" placeholder="Type ARCHIVE here" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+      <button class="btn-primary" onclick="confirmArchive()" style="background:var(--red)">&#x1F4E6; Archive trip</button>
+      <button class="btn-outline" onclick="closeModal('modalArchive')">Keep it active</button>
+    </div>
+  </div>
+</div>
+
+<!-- REACTIVATE CONFIRM MODAL -->
+<div id="modalReactivate" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title">Reactivate this trip?</span><button class="modal-close" onclick="closeModal('modalReactivate')">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="info-box">This will make the trip active again. Everyone will be able to edit the itinerary and expenses. No data is lost.</div>
+      <button class="btn-primary" onclick="confirmReactivate()">&#x1F7E2; Reactivate trip</button>
+      <button class="btn-outline" onclick="closeModal('modalReactivate')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM CURRENCY MODAL -->
+<div id="modalCustomCurrency" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title">Add Custom Currency</span><button class="modal-close" onclick="closeModal('modalCustomCurrency')">&#x2715;</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:14px">For currencies not in the standard list (e.g. Faroese Kr&#xF3;na, local currencies).</p>
+      <div class="fg"><label class="flabel">Currency Code <span class="req">*</span></label><input class="finput" id="ccCode" type="text" placeholder="e.g. FOK" maxlength="5" style="text-transform:uppercase"></div>
+      <div class="fg"><label class="flabel">Symbol <span class="req">*</span></label><input class="finput" id="ccSymbol" type="text" placeholder="e.g. kr" maxlength="5"></div>
+      <div class="fg"><label class="flabel">Name</label><input class="finput" id="ccName" type="text" placeholder="e.g. Faroese Kr&#xF3;na"></div>
+      <div class="fg"><label class="flabel">Rate vs S$ <span class="req">*</span> <span style="font-size:11px;font-weight:400;color:var(--slate)">(1 unit = how many S$)</span></label><input class="finput" id="ccRate" type="number" step="0.000001" min="0" placeholder="e.g. 0.197"></div>
+      <button class="btn-primary" onclick="saveCustomCurrency()">Add Currency</button>
+      <button class="btn-outline" onclick="closeModal('modalCustomCurrency')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMORY EDIT MODAL -->
+<div id="modalMemory" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title" id="memModalTitle">Day Memory</span><button class="modal-close" onclick="closeModal('modalMemory')">&#x2715;</button></div>
+    <div class="modal-body">
+      <div class="fg"><label class="flabel">Highlight of the day</label><textarea class="ftextarea" id="memHighlight" placeholder="One or two sentences — what made this day memorable?"></textarea></div>
+      <div class="fg"><label class="flabel">Photo Album Link</label><input class="finput" id="memPhotoLink" type="url" placeholder="https://photos.google.com/... or iCloud link"></div>
+      <div class="fg"><label class="flabel">Notes</label><textarea class="ftextarea" id="memNotes" placeholder="Anything else worth remembering..." style="min-height:56px"></textarea></div>
+      <div class="fg">
+        <label class="flabel">Ratings</label>
+        <div id="memRatings" style="background:var(--vellum);border-radius:10px;padding:4px 14px"></div>
+      </div>
+      <button class="btn-primary" onclick="saveMemory()">Save Memory</button>
+    </div>
+  </div>
+</div>
+
+<!-- CURRENCY PICKER MODAL -->
+<div id="modalCurrency" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><span class="modal-title">Add Currency</span><button class="modal-close" onclick="closeModal('modalCurrency')">&#x2715;</button></div>
+    <div class="modal-body" style="padding-bottom:16px">
+      <div class="cur-list" id="curList"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ITINERARY MODAL -->
 <div id="modalItinerary" class="modal-overlay" style="display:none">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title" id="itnModalTitle">Add Stop</span><button class="modal-close" onclick="closeModal('modalItinerary')">✕</button></div>
+    <div class="modal-head"><span class="modal-title" id="itnModalTitle">Add Stop</span><button class="modal-close" onclick="closeModal('modalItinerary')">&#x2715;</button></div>
     <div class="modal-body">
       <div class="fg"><label class="flabel">Type</label>
         <select class="fselect" id="iCat" onchange="updateItnFields(this.value)">
-          <option value="hotel">🏨  Hotel / Accommodation</option>
-          <option value="transport">✈️  Flight / Transport</option>
-          <option value="restaurant">🍽️  Restaurant</option>
-          <option value="car">🚗  Car Rental</option>
-          <option value="visit" selected>📍  Place / Activity</option>
-          <option value="other">📝  Other</option>
+          <option value="hotel">&#x1F3E8; Hotel / Accommodation</option>
+          <option value="flight">&#x2708;&#xFE0F; Flight</option>
+          <option value="train">&#x1F682; Train</option>
+          <option value="roadtrip">&#x1F697; Road Trip</option>
+          <option value="ferry">&#x1F6A2; Ferry / Boat</option>
+          <option value="restaurant">&#x1F37D;&#xFE0F; Restaurant / Dining</option>
+          <option value="visit" selected>&#x1F4CD; Place / Activity</option>
+          <option value="othertrans">&#x1F68C; Other Transport</option>
+          <option value="other">&#x1F4DD; Other</option>
         </select></div>
-      <div class="fg"><label class="flabel" id="iTitleLabel">Name / Description</label>
-        <input class="finput" id="iTitle" type="text"></div>
+      <div class="fg" id="f-title-wrap"><label class="flabel" id="iTitleLabel">Name</label><input class="finput" id="iTitle" type="text"></div>
       <!-- HOTEL -->
       <div class="ifields" id="f-hotel">
         <div class="fg"><label class="flabel">City / Area</label><input class="finput" id="iCity" type="text" placeholder="e.g. Edinburgh, Scotland"></div>
-        <div class="fg"><label class="flabel">Check-in Date <span class="req">*</span></label><input class="finput" id="iCheckIn" type="date" style="font-size:16px"
-          onchange="const o=document.getElementById('iCheckOut');if(!o.value)o.value=this.value"></div>
+        <div class="fg"><label class="flabel">Check-in Date <span class="req">*</span></label><input class="finput" id="iCheckIn" type="date" style="font-size:16px" onchange="var o=document.getElementById('iCheckOut');if(!o.value)o.value=this.value"></div>
         <div class="fg"><label class="flabel">Check-out Date <span class="req">*</span></label><input class="finput" id="iCheckOut" type="date" style="font-size:16px"></div>
         <div class="fg"><label class="flabel">Address</label><input class="finput" id="iHotelAddress" type="text"></div>
         <div class="fg"><label class="flabel">Confirmation No.</label><input class="finput" id="iConfirmation" type="text"></div>
+        <div style="background:var(--vellum);border-radius:10px;padding:2px 12px;margin-bottom:12px"><div class="toggle-row"><span class="toggle-lbl">Breakfast included</span><label class="toggle-sw"><input type="checkbox" id="iBreakfast"><span class="sl"></span></label></div></div>
       </div>
-      <!-- TRANSPORT -->
-      <div class="ifields" id="f-transport">
-        <div class="frow" style="margin-bottom:13px">
-          <div class="fg"><label class="flabel">From</label><input class="finput" id="iFrom" type="text" placeholder="Singapore"></div>
-          <div class="fg"><label class="flabel">To</label><input class="finput" id="iTo" type="text" placeholder="London"></div>
+      <!-- FLIGHT -->
+      <div class="ifields" id="f-flight">
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">From</label><input class="finput" id="iFlightFrom" type="text" placeholder="Singapore / SIN"></div><div class="fg"><label class="flabel">To</label><input class="finput" id="iFlightTo" type="text" placeholder="London / LHR"></div></div>
+        <div class="fg"><label class="flabel">Airline</label><input class="finput" id="iAirline" type="text" placeholder="e.g. Singapore Airlines"></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">Flight No.</label><input class="finput" id="iFlightNo" type="text" placeholder="SQ321"></div><div class="fg"><label class="flabel">Class</label><select class="fselect" id="iFlightClass"><option value="">-Class-</option><option>Economy</option><option>Premium Economy</option><option>Business</option><option>First</option></select></div></div>
+        <div class="fg"><label class="flabel">Depart Date &amp; Time <span class="req">*</span></label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iFlightDepartDate" type="date" style="font-size:16px" onchange="var a=document.getElementById('iFlightArriveDate');if(!a.value)a.value=this.value"></div><div class="fg"><input class="finput" id="iFlightDepartTime" type="time"></div></div>
+        <div class="fg"><label class="flabel">Arrive Date &amp; Time</label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iFlightArriveDate" type="date" style="font-size:16px"></div><div class="fg"><input class="finput" id="iFlightArriveTime" type="time"></div></div>
+        <div class="fg"><label class="flabel">Booking Reference</label><input class="finput" id="iFlightRef" type="text"></div>
+      </div>
+      <!-- TRAIN -->
+      <div class="ifields" id="f-train">
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">From Station</label><input class="finput" id="iTrainFrom" type="text" placeholder="Edinburgh Waverley"></div><div class="fg"><label class="flabel">To Station</label><input class="finput" id="iTrainTo" type="text"></div></div>
+        <div class="fg"><label class="flabel">Depart Date &amp; Time <span class="req">*</span></label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iTrainDepartDate" type="date" style="font-size:16px" onchange="var a=document.getElementById('iTrainArriveDate');if(!a.value)a.value=this.value"></div><div class="fg"><input class="finput" id="iTrainDepartTime" type="time"></div></div>
+        <div class="fg"><label class="flabel">Arrive Date &amp; Time</label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iTrainArriveDate" type="date" style="font-size:16px"></div><div class="fg"><input class="finput" id="iTrainArriveTime" type="time"></div></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">Train / Service No.</label><input class="finput" id="iTrainNo" type="text"></div><div class="fg"><label class="flabel">Coach / Seat</label><input class="finput" id="iTrainSeat" type="text" placeholder="Coach B, 24A"></div></div>
+        <div class="fg"><label class="flabel">Booking Reference</label><input class="finput" id="iTrainRef" type="text"></div>
+      </div>
+      <!-- ROAD TRIP -->
+      <div class="ifields" id="f-roadtrip">
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">From <span class="req">*</span></label><input class="finput" id="iRTFrom" type="text" placeholder="Edinburgh"></div><div class="fg"><label class="flabel">To <span class="req">*</span></label><input class="finput" id="iRTTo" type="text" placeholder="Fort William"></div></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">Date <span class="req">*</span></label><input class="finput" id="iRTDate" type="date" style="font-size:16px"></div><div class="fg"><label class="flabel">Depart Time</label><input class="finput" id="iRTTime" type="time"></div></div>
+        <div class="fg"><label class="flabel">Car / Rental Reference</label><input class="finput" id="iRTCarRef" type="text" placeholder="e.g. Hertz booking ref"></div>
+        <div class="fg">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><label class="flabel" style="margin:0">Route Stops</label><button type="button" onclick="addRTStop()" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">+ Add Stop</button></div>
+          <div id="rtStopsContainer"></div>
+          <p style="font-size:11px;color:var(--slate);margin-top:6px">Tick "Maybe" for optional stops</p>
         </div>
-        <div class="fg"><label class="flabel">Depart Date <span class="req">*</span></label><input class="finput" id="iDepartDate" type="date" style="font-size:16px"></div>
-        <div class="fg"><label class="flabel">Depart Time</label><input class="finput" id="iDepartTime" type="time"></div>
-        <div class="fg"><label class="flabel">Arrive Date</label><input class="finput" id="iArriveDate" type="date" style="font-size:16px"></div>
-        <div class="fg"><label class="flabel">Arrive Time</label><input class="finput" id="iArriveTime" type="time"></div>
-        <div class="fg"><label class="flabel">Flight / Booking No.</label><input class="finput" id="iTransRef" type="text" placeholder="e.g. SQ321"></div>
+      </div>
+      <!-- FERRY -->
+      <div class="ifields" id="f-ferry">
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">From Port</label><input class="finput" id="iFerryFrom" type="text" placeholder="Ullapool"></div><div class="fg"><label class="flabel">To Port</label><input class="finput" id="iFerryTo" type="text" placeholder="Stornoway"></div></div>
+        <div class="fg"><label class="flabel">Depart Date &amp; Time <span class="req">*</span></label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iFerryDepartDate" type="date" style="font-size:16px" onchange="var a=document.getElementById('iFerryArriveDate');if(!a.value)a.value=this.value"></div><div class="fg"><input class="finput" id="iFerryDepartTime" type="time"></div></div>
+        <div class="fg"><label class="flabel">Arrive Date &amp; Time</label></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><input class="finput" id="iFerryArriveDate" type="date" style="font-size:16px"></div><div class="fg"><input class="finput" id="iFerryArriveTime" type="time"></div></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">Operator</label><input class="finput" id="iFerryOperator" type="text" placeholder="e.g. CalMac Ferries"></div><div class="fg"><label class="flabel">Booking Ref</label><input class="finput" id="iFerryRef" type="text"></div></div>
       </div>
       <!-- RESTAURANT -->
       <div class="ifields" id="f-restaurant">
         <div class="fg"><label class="flabel">Date <span class="req">*</span></label><input class="finput" id="iRestDate" type="date" style="font-size:16px"></div>
         <div class="fg"><label class="flabel">Time <span class="req">*</span></label><input class="finput" id="iRestTime" type="time"></div>
         <div class="fg"><label class="flabel">Address / Area</label><input class="finput" id="iRestAddress" type="text"></div>
-        <div class="fg"><label class="flabel">Reservation Name / No.</label><input class="finput" id="iReservation" type="text"></div>
-      </div>
-      <!-- CAR -->
-      <div class="ifields" id="f-car">
-        <div class="fg"><label class="flabel">Pickup Location</label><input class="finput" id="iPickupLoc" type="text"></div>
-        <div class="fg"><label class="flabel">Pickup Date <span class="req">*</span></label><input class="finput" id="iPickupDate" type="date" style="font-size:16px"></div>
-        <div class="fg"><label class="flabel">Pickup Time</label><input class="finput" id="iPickupTime" type="time"></div>
-        <div class="fg"><label class="flabel">Return Location</label><input class="finput" id="iReturnLoc" type="text"></div>
-        <div class="fg"><label class="flabel">Return Date</label><input class="finput" id="iReturnDate" type="date" style="font-size:16px"></div>
-        <div class="fg"><label class="flabel">Return Time</label><input class="finput" id="iReturnTime" type="time"></div>
-        <div class="fg"><label class="flabel">Booking Reference</label><input class="finput" id="iCarRef" type="text"></div>
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">Reservation Name/No.</label><input class="finput" id="iReservation" type="text"></div><div class="fg"><label class="flabel">Cuisine</label><select class="fselect" id="iCuisine"><option value="">-Cuisine-</option><option>Scottish</option><option>British</option><option>French</option><option>Italian</option><option>Japanese</option><option>Chinese</option><option>Indian</option><option>Mediterranean</option><option>Seafood</option><option>Steakhouse</option><option>Gastropub</option><option>Other</option></select></div></div>
       </div>
       <!-- VISIT -->
       <div class="ifields" id="f-visit">
         <div class="fg"><label class="flabel">Date</label><input class="finput" id="iVisitDate" type="date" style="font-size:16px"></div>
         <div class="fg"><label class="flabel">Time</label><input class="finput" id="iVisitTime" type="time"></div>
         <div class="fg"><label class="flabel">Address / Location</label><input class="finput" id="iVisitAddress" type="text"></div>
+        <div class="fg"><label class="flabel">Duration</label><select class="fselect" id="iVisitDuration"><option value="">-How long?-</option><option>30 min</option><option>1 hour</option><option>1.5 hours</option><option>2 hours</option><option>Half day</option><option>Full day</option></select></div>
         <div class="fg"><label class="flabel">Tickets / Booking Info</label><input class="finput" id="iTickets" type="text"></div>
+      </div>
+      <!-- OTHER TRANSPORT -->
+      <div class="ifields" id="f-othertrans">
+        <div class="frow" style="margin-bottom:12px"><div class="fg"><label class="flabel">From</label><input class="finput" id="iOTFrom" type="text"></div><div class="fg"><label class="flabel">To</label><input class="finput" id="iOTTo" type="text"></div></div>
+        <div class="fg"><label class="flabel">Date <span class="req">*</span></label><input class="finput" id="iOTDate" type="date" style="font-size:16px"></div>
+        <div class="fg"><label class="flabel">Time</label><input class="finput" id="iOTTime" type="time"></div>
+        <div class="fg"><label class="flabel">Reference</label><input class="finput" id="iOTRef" type="text"></div>
       </div>
       <!-- OTHER -->
       <div class="ifields" id="f-other">
         <div class="fg"><label class="flabel">Date</label><input class="finput" id="iOtherDate" type="date" style="font-size:16px"></div>
         <div class="fg"><label class="flabel">Time</label><input class="finput" id="iOtherTime" type="time"></div>
-        <div class="fg"><label class="flabel">Location</label><input class="finput" id="iOtherLocation" type="text"></div>
+        <div class="fg"><label class="flabel">Location</label><input class="finput" id="iOtherLoc" type="text"></div>
       </div>
-      <div class="fg"><label class="flabel">Notes</label><textarea class="ftextarea" id="iNotes" placeholder="Confirmation numbers, tips, reminders…"></textarea></div>
+      <div class="fg"><label class="flabel">Notes</label><textarea class="ftextarea" id="iNotes" placeholder="Confirmation numbers, tips, reminders&#x2026;"></textarea></div>
       <button class="btn-primary" onclick="saveItn()">Save</button>
       <button class="btn-ghost" id="itnDeleteBtn" style="display:none" onclick="deleteItn()">Delete this stop</button>
     </div>
@@ -251,21 +412,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
 <div id="modalExpense" class="modal-overlay" style="display:none">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-head"><span class="modal-title" id="expModalTitle">Add Expense</span><button class="modal-close" onclick="closeModal('modalExpense')">✕</button></div>
+    <div class="modal-head"><span class="modal-title" id="expModalTitle">Add Expense</span><button class="modal-close" onclick="closeModal('modalExpense')">&#x2715;</button></div>
     <div class="modal-body">
       <div class="fg"><label class="flabel">Description</label><input class="finput" id="eDesc" type="text" placeholder="e.g. Dinner at The Kitchin"></div>
       <div class="frow">
         <div class="fg"><label class="flabel">Amount</label><input class="finput" id="eAmt" type="number" placeholder="0.00" step="0.01" min="0" inputmode="decimal"></div>
-        <div class="fg"><label class="flabel">Currency</label>
-          <select class="fselect" id="eCur"><option value="SGD">SGD S$</option><option value="GBP">GBP £</option><option value="EUR">EUR €</option><option value="DKK">DKK kr</option></select></div>
+        <div class="fg"><label class="flabel">Currency</label><select class="fselect" id="eCur"></select></div>
       </div>
       <div class="frow">
-        <div class="fg"><label class="flabel">Category</label>
-          <select class="fselect" id="eCat">
-            <option value="food">🍔 Food & Drink</option><option value="accommodation">🏨 Accommodation</option>
-            <option value="transport">🚌 Transport</option><option value="activities">🎭 Activities</option>
-            <option value="shopping">🛍️ Shopping</option><option value="other">📦 Other</option>
-          </select></div>
+        <div class="fg"><label class="flabel">Category</label><select class="fselect" id="eCat"><option value="food">&#x1F354; Food &amp; Drink</option><option value="accommodation">&#x1F3E8; Accommodation</option><option value="transport">&#x1F68C; Transport</option><option value="activities">&#x1F3AD; Activities</option><option value="shopping">&#x1F6CD;&#xFE0F; Shopping</option><option value="other">&#x1F4E6; Other</option></select></div>
         <div class="fg"><label class="flabel">Date</label><input class="finput" id="eDate" type="date" style="font-size:16px"></div>
       </div>
       <div class="fg"><label class="flabel">Paid by</label><select class="fselect" id="ePaidBy"></select></div>
@@ -276,485 +431,987 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
   </div>
 </div>
 
-<!-- HEADER -->
-<header class="app-header">
-  <div><div class="hdr-title" id="headerTitle">TripMate ☁️</div><div class="hdr-sub" id="headerSub">Group Travel Companion</div>
-    <div class="hdr-sub" id="syncStatus" style="margin-top:3px;font-size:10px;letter-spacing:.2px"></div></div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <button onclick="openModal('modalBackup')" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 10px;color:#fff;cursor:pointer;font-size:18px;line-height:1" title="Save & backup">💾</button>
-    <div class="user-chip" onclick="openUserModal()"><span id="chipAvatar">👤</span><span id="chipName">Select me</span></div>
-  </div>
-</header>
-
-<main class="main-content">
-  <div class="tab-panel active" id="tab-itinerary"><div id="itnContent"></div></div>
-  <div class="tab-panel" id="tab-expenses"><div id="expStrip"></div><div id="expContent"></div></div>
-  <div class="tab-panel" id="tab-settle"><div id="settleContent"></div></div>
-  <div class="tab-panel" id="tab-settings"><div id="settingsContent"></div></div>
-</main>
-
-<button class="fab" id="fabBtn" onclick="handleFab()">+</button>
-
-<nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-itinerary" onclick="switchTab('itinerary')">
-    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>Itinerary</button>
-  <button class="nav-btn" id="nav-expenses" onclick="switchTab('expenses')">
-    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h2M10 15h4"/></svg>Expenses</button>
-  <button class="nav-btn" id="nav-settle" onclick="switchTab('settle')">
-    <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>Settle</button>
-  <button class="nav-btn" id="nav-settings" onclick="switchTab('settings')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings</button>
-</nav>
-<div class="toast" id="toast"></div>
-
+<!-- APP FRAME -->
+<div id="appHeader"></div>
+<main id="appMain" class="main-content" style="padding-top:0"></main>
+<button id="fabBtn" class="fab" onclick="handleFab()" style="display:none">+</button>
+<nav id="appNav" class="bottom-nav" style="display:none"></nav>
+<div id="toast" class="toast"></div>
 <script>
+// ════ CONSTANTS ════
 const AVATARS=['✈️','🗺️','📸','🎒','🧳','🏝️'];
-const ICAT={hotel:{label:'Hotel',icon:'🏨',color:'#6D3FC7'},transport:{label:'Transport',icon:'✈️',color:'#0E7EA8'},restaurant:{label:'Restaurant',icon:'🍽️',color:'#C93535'},car:{label:'Car Rental',icon:'🚗',color:'#1D6FD4'},visit:{label:'Place/Activity',icon:'📍',color:'#157A56'},other:{label:'Other',icon:'📝',color:'#B86E10'}};
-const ECAT={food:{label:'Food & Drink',icon:'🍔',color:'#C93535'},accommodation:{label:'Accommodation',icon:'🏨',color:'#6D3FC7'},transport:{label:'Transport',icon:'🚌',color:'#0E7EA8'},activities:{label:'Activities',icon:'🎭',color:'#157A56'},shopping:{label:'Shopping',icon:'🛍️',color:'#B0226B'},other:{label:'Other',icon:'📦',color:'#B86E10'}};
-const CSYM={SGD:'S$',GBP:'£',EUR:'€',DKK:'kr '};
-const TITLE_LABELS={hotel:'Hotel / Property Name',transport:'Description  (e.g. SQ321 Singapore → London)',restaurant:'Restaurant Name',car:'Rental Company / Description',visit:'Name of Place or Activity',other:'Title'};
 
-let S={tripName:'Our Trip',tripStart:'',tripEnd:'',travellers:['CP','Jon','Eunice','Larry'],activeUser:null,itinerary:[],expenses:[],rates:{SGD:1,GBP:1.72,EUR:1.47,DKK:0.197},hasExported:false};
-let editItnId=null,editExpId=null,curTab='itinerary';
+const ALL_CURRENCIES={
+  SGD:{name:'Singapore Dollar',   symbol:'S$',   rate:1},
+  USD:{name:'US Dollar',          symbol:'$',    rate:0.74},
+  EUR:{name:'Euro',               symbol:'€',    rate:0.68},
+  GBP:{name:'British Pound',      symbol:'£',    rate:0.57},
+  DKK:{name:'Danish Krone',       symbol:'kr',   rate:0.197},
+  JPY:{name:'Japanese Yen',       symbol:'¥',    rate:0.0048},
+  AUD:{name:'Australian Dollar',  symbol:'A$',   rate:0.47},
+  HKD:{name:'Hong Kong Dollar',   symbol:'HK$',  rate:0.095},
+  CNY:{name:'Chinese Yuan',       symbol:'¥',    rate:0.102},
+  MYR:{name:'Malaysian Ringgit',  symbol:'RM',   rate:0.166},
+  THB:{name:'Thai Baht',          symbol:'฿',    rate:0.021},
+  VND:{name:'Vietnamese Dong',    symbol:'₫',    rate:0.000029},
+  PHP:{name:'Philippine Peso',    symbol:'₱',    rate:0.013},
+  INR:{name:'Indian Rupee',       symbol:'₹',    rate:0.0089},
+  IDR:{name:'Indonesian Rupiah',  symbol:'Rp',   rate:0.000046},
+  KRW:{name:'South Korean Won',   symbol:'₩',    rate:0.00054},
+  CHF:{name:'Swiss Franc',        symbol:'Fr',   rate:0.83},
+  NZD:{name:'New Zealand Dollar', symbol:'NZ$',  rate:0.44},
+  CAD:{name:'Canadian Dollar',    symbol:'C$',   rate:0.55},
+  SEK:{name:'Swedish Krona',      symbol:'kr',   rate:0.072},
+  NOK:{name:'Norwegian Krone',    symbol:'kr',   rate:0.073},
+  AED:{name:'UAE Dirham',         symbol:'AED',  rate:0.202},
+  SAR:{name:'Saudi Riyal',        symbol:'SAR',  rate:0.197},
+  BRL:{name:'Brazilian Real',     symbol:'R$',   rate:0.147},
+  ZAR:{name:'South African Rand', symbol:'R',    rate:0.041},
+};
 
-function load(){try{const r=localStorage.getItem('tripmate_sync_v1');if(r)Object.assign(S,JSON.parse(r))}catch(e){}}
+const ICAT={
+  hotel:      {label:'Hotel',          icon:'🏨',color:'#6D3FC7'},
+  flight:     {label:'Flight',         icon:'✈️',color:'#0E7EA8'},
+  train:      {label:'Train',          icon:'🚂',color:'#1D6FD4'},
+  roadtrip:   {label:'Road Trip',      icon:'🚗',color:'#157A56'},
+  ferry:      {label:'Ferry',          icon:'🚢',color:'#0891B2'},
+  restaurant: {label:'Restaurant',     icon:'🍽️',color:'#C93535'},
+  visit:      {label:'Place/Activity', icon:'📍',color:'#B86E10'},
+  othertrans: {label:'Transport',      icon:'🚌',color:'#6B7280'},
+  other:      {label:'Other',          icon:'📝',color:'#9CA3AF'},
+};
+
+const ECAT={
+  food:          {label:'Food & Drink',  icon:'🍔',color:'#C93535'},
+  accommodation: {label:'Accommodation', icon:'🏨',color:'#6D3FC7'},
+  transport:     {label:'Transport',     icon:'🚌',color:'#0E7EA8'},
+  activities:    {label:'Activities',    icon:'🎭',color:'#157A56'},
+  shopping:      {label:'Shopping',      icon:'🛍️',color:'#B0226B'},
+  other:         {label:'Other',         icon:'📦',color:'#B86E10'},
+};
+
+const TITLE_LABELS={
+  hotel:'Hotel / Property Name',flight:'Description (e.g. SQ321 Singapore → London)',
+  train:'Description (e.g. Edinburgh → London)',ferry:'Description (e.g. Ullapool → Stornoway)',
+  restaurant:'Restaurant Name',visit:'Name of Place or Activity',
+  othertrans:'Description (e.g. Taxi to airport)',other:'Title',
+};
+
+const RT_STOP_TYPES={
+  scenic:{label:'📸 Scenic Stop',icon:'📸'},break:{label:'☕ Break / Rest',icon:'☕'},
+  meal:{label:'🍽️ Meal Stop',icon:'🍽️'},attraction:{label:'🏛️ Attraction',icon:'🏛️'},
+  town:{label:'🏘️ Town / Village',icon:'🏘️'},fuel:{label:'⛽ Fuel Stop',icon:'⛽'},
+  other:{label:'📍 Other',icon:'📍'},
+};
+
+// ════ APP STATE ════
+let APP={
+  trips:[],
+  activeTripId:null,
+  currentViewTripId:null,
+  travellers:['CP','Jon','Eunice','Larry'],
+  activeUser:null,
+  cloudApiKey:'',cloudBinId:'',cloudLastSync:null,
+  hasExported:false,
+};
+let VIEW='library'; // 'library'|'active'|'archived'
+let ACTIVE_TAB='itinerary';
+let editItnId=null,editExpId=null,memEditDate=null;
+let rtStops=[];
+let syncTimer=null;
+
+// ════ PERSISTENCE ════
+function load(){
+  try{const r=localStorage.getItem('tripmate_v5');if(r)Object.assign(APP,JSON.parse(r))}catch(e){}
+}
 function save(){
-  try{
-    localStorage.setItem('tripmate_sync_v1',JSON.stringify(S));
-    if(S.cloudApiKey&&S.cloudBinId)debouncedSync();
-  }catch(e){toast('⚠️ Storage full — export a backup now');openModal('modalBackup')}
+  try{localStorage.setItem('tripmate_v5',JSON.stringify(APP));if(APP.cloudApiKey&&APP.cloudBinId)debouncedSync()}
+  catch(e){toast('Storage full — export a backup');openModal('modalBackup')}
 }
 
+// ════ UTILS ════
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function fmt(n,d=2){return(+n).toFixed(d)}
-function toSGD(a,c){return a*(S.rates[c]||1)}
+function toSGD(a,c,trip){
+  const rates=trip?.rates||{};
+  const customRate=trip?.customCurrencies?.[c]?.rate;
+  return a*(rates[c]||customRate||ALL_CURRENCIES[c]?.rate||1);
+}
 function today(){return new Date().toISOString().slice(0,10)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function fmtDateShort(ds){if(!ds)return'';return new Date(ds+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
-function fmtDayLabel(ds){if(!ds)return'';return new Date(ds+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function fmtDS(ds){if(!ds)return'';return new Date(ds+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function fmtDL(ds){if(!ds)return'';return new Date(ds+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function fmtFull(ds){if(!ds)return'';return new Date(ds+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
 function fmtTime(ts){if(!ts)return'';const[h,m]=ts.split(':').map(Number);return`${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`}
-function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500)}
-function setDC(id,val){const el=document.getElementById(id);if(!el)return;el.value=val||'';if(S.tripStart)el.min=S.tripStart;if(S.tripEnd)el.max=S.tripEnd}
+function dBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000)}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2800)}
+function setDC(id,val,trip){
+  const el=document.getElementById(id);if(!el)return;el.value=val||'';
+  const s=trip?.start||'';const e=trip?.end||'';
+  if(s)el.min=s;if(e)el.max=e;
+}
+function curSymbol(code,trip){
+  const rates=trip?.rates||{};
+  // Check if we have custom rate stored
+  return ALL_CURRENCIES[code]?.symbol||code;
+}
 
+// ════ TRIP HELPERS ════
+function currentTrip(){return APP.trips.find(t=>t.id===APP.currentViewTripId)}
+function activeTrip(){return APP.trips.find(t=>t.id===APP.activeTripId&&t.status==='active')}
+
+function newTripObj(name,start,end){
+  const defaultRates={};
+  ['SGD','USD','EUR','GBP'].forEach(c=>{defaultRates[c]=ALL_CURRENCIES[c].rate});
+  return{
+    id:uid(),name:name||'New Trip',start:start||'',end:end||'',
+    status:'active',createdAt:Date.now(),archivedAt:null,
+    itinerary:[],expenses:[],memories:{},
+    rates:{...defaultRates},
+    activeCurrencies:['SGD','USD','EUR','GBP'],
+  };
+}
+
+// ════ MODALS ════
 function openModal(id){document.getElementById(id).style.display='flex'}
 function closeModal(id){document.getElementById(id).style.display='none'}
-document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this)closeModal(this.id)})});
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',function(e){if(e.target===this)closeModal(this.id)});
+});
 
-// Trip setup
-function openTripDatesModal(){
-  document.getElementById('tdName').value=S.tripName||'';
-  document.getElementById('tdStart').value=S.tripStart||'';
-  document.getElementById('tdEnd').value=S.tripEnd||'';
-  openModal('modalTripDates');
-}
-function saveTripDates(){
-  const name=document.getElementById('tdName').value.trim();
-  const start=document.getElementById('tdStart').value;
-  const end=document.getElementById('tdEnd').value;
-  if(!start){toast('Please pick a start date');return}
-  if(!end){toast('Please pick an end date');return}
-  if(end<start){toast('End date must be after start date');return}
-  if(name)S.tripName=name;
-  S.tripStart=start;S.tripEnd=end;
-  save();closeModal('modalTripDates');updateHeader();renderTab(curTab);
-  toast('Trip dates saved ✓');
-}
-function updateTripDate(field,val){
-  if(!val)return;
-  S[field]=val;
-  if(S.tripStart&&S.tripEnd&&S.tripEnd<S.tripStart){toast('End must be after start');S[field]='';renderSettings();return}
-  save();updateHeader();toast('Updated ✓');
-}
+// ════ CLOUD SYNC ════
+const CLOUD_BASE='https://api.jsonbin.io/v3';
 
-// User picker
+function setSyncStatus(status){
+  const btn=document.getElementById('syncBtn');if(!btn)return;
+  const map={noconfig:{t:'⚪ Sync',c:''},syncing:{t:'🔄 Syncing',c:'syncing'},ok:{t:'🟢 Synced',c:'ok'},error:{t:'🔴 Failed',c:'error'}};
+  const s=map[status]||map.noconfig;btn.textContent=s.t;btn.className='sync-btn'+(s.c?' '+s.c:'');
+}
+function handleSyncTap(){
+  if(APP.cloudApiKey&&APP.cloudBinId)syncFromCloud(true);
+  else{switchTab('settings')}
+}
+async function syncToCloud(){
+  if(!APP.cloudApiKey||!APP.cloudBinId)return;
+  setSyncStatus('syncing');
+  try{
+    const payload={trips:APP.trips,travellers:APP.travellers,activeTripId:APP.activeTripId,lastModified:Date.now(),lastModifiedBy:APP.activeUser};
+    const r=await fetch(`${CLOUD_BASE}/b/${APP.cloudBinId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':APP.cloudApiKey},body:JSON.stringify(payload)});
+    if(r.ok){APP.cloudLastSync=Date.now();localStorage.setItem('tripmate_v5',JSON.stringify(APP));setSyncStatus('ok')}
+    else setSyncStatus('error');
+  }catch(e){setSyncStatus('error')}
+}
+async function syncFromCloud(showToast=true){
+  if(!APP.cloudApiKey||!APP.cloudBinId){setSyncStatus('noconfig');return}
+  setSyncStatus('syncing');
+  try{
+    const r=await fetch(`${CLOUD_BASE}/b/${APP.cloudBinId}/latest`,{headers:{'X-Master-Key':APP.cloudApiKey}});
+    if(r.ok){
+      const data=await r.json();const cloud=data.record;
+      const keep={activeUser:APP.activeUser,cloudApiKey:APP.cloudApiKey,cloudBinId:APP.cloudBinId,hasExported:APP.hasExported,currentViewTripId:APP.currentViewTripId};
+      Object.assign(APP,cloud,keep);APP.cloudLastSync=Date.now();
+      localStorage.setItem('tripmate_v5',JSON.stringify(APP));
+      setSyncStatus('ok');renderApp();
+      if(showToast)toast(`Synced${cloud.lastModifiedBy?' · '+cloud.lastModifiedBy:''} ✓`);
+    }else{setSyncStatus('error');if(showToast)toast('Sync failed — check API key & Trip Code')}
+  }catch(e){setSyncStatus('error');if(showToast)toast('Network error during sync')}
+}
+async function createBin(){
+  if(!APP.cloudApiKey){toast('Enter your API key first');return}
+  setSyncStatus('syncing');
+  try{
+    const payload={trips:APP.trips,travellers:APP.travellers,activeTripId:APP.activeTripId,lastModified:Date.now(),lastModifiedBy:APP.activeUser};
+    const r=await fetch(`${CLOUD_BASE}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':APP.cloudApiKey,'X-Bin-Name':'TripMate','X-Bin-Private':'false'},body:JSON.stringify(payload)});
+    if(r.ok){const data=await r.json();APP.cloudBinId=data.metadata.id;localStorage.setItem('tripmate_v5',JSON.stringify(APP));setSyncStatus('ok');renderContent();toast('✅ Trip created! Share your Trip Code.')}
+    else{setSyncStatus('error');toast('Could not create — check API key')}
+  }catch(e){setSyncStatus('error');toast('Network error')}
+}
+function debouncedSync(){clearTimeout(syncTimer);syncTimer=setTimeout(syncToCloud,2500)}
+
+// ════ USER PICKER ════
 function openUserModal(){
-  document.getElementById('userGrid').innerHTML=S.travellers.map((n,i)=>
+  document.getElementById('userGrid').innerHTML=APP.travellers.map((n,i)=>
     `<div class="user-opt" onclick="pickUser(${i})"><div class="uav">${AVATARS[i]||'👤'}</div><div class="unm">${esc(n)}</div></div>`
-  ).join('');
-  openModal('modalUser');
+  ).join('');openModal('modalUser');
 }
 function pickUser(i){
-  S.activeUser=S.travellers[i];save();closeModal('modalUser');updateHeader();renderTab(curTab);
-  toast(`Welcome, ${S.activeUser}!`);
-  if(!S.tripStart)setTimeout(openTripDatesModal,350);
-}
-function updateHeader(){
-  const i=S.travellers.indexOf(S.activeUser);
-  document.getElementById('chipAvatar').textContent=i>=0?(AVATARS[i]||'👤'):'👤';
-  document.getElementById('chipName').textContent=S.activeUser||'Select me';
-  document.getElementById('headerTitle').textContent=S.tripName+' ✈';
-  document.getElementById('headerSub').textContent=(S.tripStart&&S.tripEnd)?fmtDateShort(S.tripStart)+' → '+fmtDateShort(S.tripEnd):S.tripStart?'From '+fmtDateShort(S.tripStart):'Group Travel Companion';
+  APP.activeUser=APP.travellers[i];save();closeModal('modalUser');
+  renderHeader();renderNav();
+  toast(`Welcome, ${APP.activeUser}!`);
+  if(!activeTrip())openModal('modalNewTrip');
 }
 
-// Tabs
+// ════ NEW TRIP ════
+function openNewTripModal(){
+  document.getElementById('ntName').value='';
+  document.getElementById('ntStart').value='';
+  document.getElementById('ntEnd').value='';
+  document.getElementById('newTripTitle').textContent='New Trip';
+  openModal('modalNewTrip');
+}
+function saveNewTrip(){
+  const name=document.getElementById('ntName').value.trim();
+  const start=document.getElementById('ntStart').value;
+  const end=document.getElementById('ntEnd').value;
+  if(!name){toast('Please enter a trip name');return}
+  if(!start){toast('Please enter a start date');return}
+  if(!end){toast('Please enter an end date');return}
+  if(end<start){toast('End date must be after start date');return}
+  const trip=newTripObj(name,start,end);
+  APP.trips.push(trip);
+  APP.activeTripId=trip.id;
+  APP.currentViewTripId=trip.id;
+  VIEW='active';ACTIVE_TAB='itinerary';
+  save();closeModal('modalNewTrip');renderApp();
+  toast(`"${trip.name}" created! ✓`);
+}
+
+// ════ ARCHIVE ════
+function openArchiveModal(){
+  const inp=document.getElementById('archiveConfirmInput');
+  if(inp)inp.value='';
+  openModal('modalArchive');
+}
+function confirmArchive(){
+  const input=document.getElementById('archiveConfirmInput');
+  if(!input||input.value.trim().toUpperCase()!=='ARCHIVE'){
+    toast('Please type ARCHIVE to confirm');
+    input.style.border='1.5px solid var(--red)';
+    setTimeout(()=>{input.style.border='';},2000);
+    return;
+  }
+  const trip=currentTrip();if(!trip)return;
+  trip.status='archived';trip.archivedAt=Date.now();
+  if(APP.activeTripId===trip.id)APP.activeTripId=null;
+  const nextActive=APP.trips.find(t=>t.status==='active');
+  if(nextActive)APP.activeTripId=nextActive.id;
+  save();closeModal('modalArchive');
+  document.getElementById('archiveConfirmInput').value='';
+  VIEW='archived';ACTIVE_TAB='timeline';
+  renderApp();toast('Trip archived — tap Memories to add highlights');
+}
+function confirmReactivate(){
+  const trip=currentTrip();if(!trip)return;
+  trip.status='active';trip.archivedAt=null;
+  APP.activeTripId=trip.id;
+  save();closeModal('modalReactivate');
+  VIEW='active';ACTIVE_TAB='itinerary';
+  renderApp();toast('Trip reactivated! ✓');
+}
+
+// ════ NAVIGATION ════
 function switchTab(tab){
-  curTab=tab;
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.getElementById('nav-'+tab).classList.add('active');
-  document.getElementById('fabBtn').style.display=(tab==='itinerary'||tab==='expenses')?'flex':'none';
-  renderTab(tab);
+  ACTIVE_TAB=tab;
+  renderNav();renderContent();
 }
-function renderTab(tab){
-  if(tab==='itinerary')renderItinerary();else if(tab==='expenses')renderExpenses();else if(tab==='settle')renderSettle();else if(tab==='settings')renderSettings();
+function openTrip(tripId){
+  APP.currentViewTripId=tripId;
+  const trip=APP.trips.find(t=>t.id===tripId);
+  if(trip?.status==='active'){
+    APP.activeTripId=tripId;
+    VIEW='active';ACTIVE_TAB='itinerary';
+  }else{
+    VIEW='archived';ACTIVE_TAB='timeline';
+  }
+  save();renderApp();
 }
-function handleFab(){if(curTab==='itinerary')openItnModal(null,null);else if(curTab==='expenses')openExpModal(null)}
+function goToLibrary(){
+  VIEW='library';renderApp();
+}
+function handleFab(){
+  if(VIEW==='active'){
+    if(ACTIVE_TAB==='itinerary')openItnModal(null,null);
+    else if(ACTIVE_TAB==='expenses')openExpModal(null);
+  }
+}
 
-// Itinerary modal
-function updateItnFields(cat){
-  document.getElementById('iTitleLabel').textContent=TITLE_LABELS[cat]||'Name';
-  ['hotel','transport','restaurant','car','visit','other'].forEach(g=>{
-    const el=document.getElementById('f-'+g);if(el)el.classList.toggle('show',g===cat);
-  });
+// ════ RENDER APP ════
+function renderApp(){
+  renderHeader();renderNav();renderContent();
+  const fab=document.getElementById('fabBtn');
+  if(fab)fab.style.display=(VIEW==='active'&&(ACTIVE_TAB==='itinerary'||ACTIVE_TAB==='expenses'))?'flex':'none';
 }
+
+function renderHeader(){
+  const h=document.getElementById('appHeader');
+  if(VIEW==='library'){
+    h.innerHTML=`<div class="hdr-lib">
+      <div class="hdr-lib-title">TripMate ✈</div>
+      <div class="hdr-lib-sub">Your group travel companion</div>
+    </div>`;
+    return;
+  }
+  const trip=currentTrip();
+  if(!trip){h.innerHTML='';return}
+  const dateRange=(trip.start&&trip.end)?`${fmtDS(trip.start)} → ${fmtDS(trip.end)}`:trip.start?`From ${fmtDS(trip.start)}`:'';
+  if(VIEW==='active'){
+    h.innerHTML=`<div class="hdr-active">
+      <div><div class="hdr-title">${esc(trip.name)} ☁️</div><div class="hdr-sub">${dateRange}</div></div>
+      <div class="hdr-right">
+        <button class="sync-btn" id="syncBtn" onclick="handleSyncTap()">⚪ Sync</button>
+        <div class="user-chip" onclick="openUserModal()"><span>${getAvatar()}</span>&nbsp;<span>${esc(APP.activeUser||'Me')}</span></div>
+      </div>
+    </div>`;
+    setSyncStatus(APP.cloudApiKey&&APP.cloudBinId?'ok':'noconfig');
+  }else{
+    h.innerHTML=`<div class="hdr-archived">
+      <div><div class="hdr-title">📖 ${esc(trip.name)}</div><div class="hdr-sub">${dateRange} · Archived</div></div>
+      <div class="hdr-right">
+        <button class="back-btn" onclick="openModal('modalReactivate')" style="background:rgba(26,158,110,.25);border-color:rgba(26,158,110,.4);margin-right:4px">🟢 Reactivate</button>
+        <button class="back-btn" onclick="goToLibrary()">&#x2190; Trips</button>
+      </div>
+    </div>`;
+  }
+}
+
+function getAvatar(){const i=APP.travellers.indexOf(APP.activeUser);return i>=0?(AVATARS[i]||'👤'):'👤'}
+
+function renderNav(){
+  const nav=document.getElementById('appNav');
+  if(VIEW==='library'){nav.style.display='none';return}
+  nav.style.display='flex';
+  const svgMap={
+    itinerary:`<svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>`,
+    expenses:`<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h2M10 15h4"/></svg>`,
+    settle:`<svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>`,
+    settings:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`,
+    timeline:`<svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>`,
+    memories:`<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`,
+  };
+  const tabs=VIEW==='active'
+    ?[['itinerary','Itinerary'],['expenses','Expenses'],['settle','Settle'],['settings','Settings']]
+    :[['timeline','Timeline'],['memories','Memories'],['expenses','Expenses']];
+  nav.innerHTML=tabs.map(([t,l])=>`<button class="nav-btn ${ACTIVE_TAB===t?'active':''}" onclick="switchTab('${t}')">${svgMap[t]||''}${l}</button>`).join('');
+}
+
+function renderContent(){
+  const main=document.getElementById('appMain');
+  if(VIEW==='library'){main.innerHTML=renderLibraryHTML();return}
+  const trip=currentTrip();if(!trip){main.innerHTML='';return}
+  if(VIEW==='active'){
+    if(ACTIVE_TAB==='itinerary')main.innerHTML=renderItineraryHTML(trip);
+    else if(ACTIVE_TAB==='expenses')main.innerHTML=renderExpensesHTML(trip);
+    else if(ACTIVE_TAB==='settle')main.innerHTML=renderSettleHTML(trip);
+    else if(ACTIVE_TAB==='settings')main.innerHTML=renderSettingsHTML();
+  }else{
+    if(ACTIVE_TAB==='timeline')main.innerHTML=renderTimelineHTML(trip);
+    else if(ACTIVE_TAB==='memories')main.innerHTML=renderMemoriesHTML(trip);
+    else if(ACTIVE_TAB==='expenses')main.innerHTML=renderArchiveExpHTML(trip);
+  }
+}
+
+// ════ LIBRARY VIEW ════
+function renderLibraryHTML(){
+  const active=APP.trips.filter(t=>t.status==='active');
+  const archived=APP.trips.filter(t=>t.status==='archived').sort((a,b)=>(b.archivedAt||0)-(a.archivedAt||0));
+  let html=`<button class="new-trip-btn" onclick="openNewTripModal()">+ Plan a New Trip</button>`;
+  if(active.length){
+    html+=`<div class="lib-trips-section"><div class="lib-section-title">Active Trips</div>`;
+    active.forEach(t=>{
+      const nights=t.start&&t.end?dBetween(t.start,t.end):null;
+      html+=`<div class="trip-card" onclick="openTrip('${t.id}')">
+        <div class="trip-card-left">
+          <div class="trip-card-name">${esc(t.name)}</div>
+          <div class="trip-card-dates">${t.start?fmtDS(t.start):''}${t.end?' → '+fmtDS(t.end):''}</div>
+          <div class="trip-card-meta">${nights!==null?nights+' nights · ':''}${t.itinerary.length} stops · ${t.expenses.length} expenses</div>
+        </div>
+        <span class="trip-status-badge badge-active">Active</span>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+  if(archived.length){
+    html+=`<div class="lib-trips-section"><div class="lib-section-title">Past Trips</div>`;
+    archived.forEach(t=>{
+      const memCount=Object.keys(t.memories||{}).length;
+      html+=`<div class="trip-card" onclick="openTrip('${t.id}')">
+        <div class="trip-card-left">
+          <div class="trip-card-name">${esc(t.name)}</div>
+          <div class="trip-card-dates">${t.start?fmtDS(t.start):''}${t.end?' → '+fmtDS(t.end):''}</div>
+          <div class="trip-card-meta">${t.itinerary.length} stops · ${memCount} memories</div>
+        </div>
+        <span class="trip-status-badge badge-archived">📖 Memories</span>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+  if(!active.length&&!archived.length){
+    html+=`<div class="empty"><div class="eico">✈️</div><p>No trips yet.<br>Tap <strong>Plan a New Trip</strong> to get started!</p></div>`;
+  }
+  return html;
+}
+
+// ════ ITINERARY RENDER ════
+function buildEventDetail(item,trip){
+  const c=item.category;
+  if(c==='hotel')return[item.city?`📍 ${item.city}`:'',`${item.nights||'?'} night${item.nights!==1?'s':''}`,item.hotelAddress||'',item.confirmationNo?`Conf: ${item.confirmationNo}`:'',item.breakfast?'🥐 Breakfast':''].filter(Boolean).join(' · ');
+  if(c==='flight')return[item.from&&item.to?`${item.from} → ${item.to}`:'',item.airline||'',item.flightNo||'',item.flightClass||'',item.arriveDate&&item.arriveDate!==item.date?`Arrives ${fmtDS(item.arriveDate)}${item.arriveTime?' '+fmtTime(item.arriveTime):''}`:item.arriveTime?`Arrives ${fmtTime(item.arriveTime)}`:'',,item.reference?`Ref: ${item.reference}`:''].filter(Boolean).join(' · ');
+  if(c==='train')return[item.from&&item.to?`${item.from} → ${item.to}`:'',item.trainNo||'',item.seat?`Seat: ${item.seat}`:'',item.arriveTime?`Arrives ${fmtTime(item.arriveTime)}`:'',item.reference?`Ref: ${item.reference}`:''].filter(Boolean).join(' · ');
+  if(c==='roadtrip')return item.carRef?`🔑 ${item.carRef}`:'';
+  if(c==='ferry')return[item.from&&item.to?`${item.from} → ${item.to}`:'',item.operator||'',item.arriveTime?`Arrives ${fmtTime(item.arriveTime)}`:'',item.reference?`Ref: ${item.reference}`:''].filter(Boolean).join(' · ');
+  if(c==='restaurant')return[item.cuisine||'',item.address||'',item.reservation?`Res: ${item.reservation}`:''].filter(Boolean).join(' · ');
+  if(c==='visit')return[item.duration||'',item.address||'',item.tickets||''].filter(Boolean).join(' · ');
+  if(c==='othertrans')return[item.from&&item.to?`${item.from} → ${item.to}`:'',item.reference||''].filter(Boolean).join(' · ');
+  return item.location||'';
+}
+
+function renderEvRow(item,trip,readonly=false){
+  const cat=ICAT[item.category]||ICAT.other;
+  const t=item.time?fmtTime(item.time):'';
+  const lbl=item.category==='hotel'?`Check in — ${esc(item.title)}`:esc(item.title);
+  const d=buildEventDetail(item,trip);
+  const click=readonly?'':'onclick="openItnModal(\''+item.id+'\',null)"';
+  if(item.category==='roadtrip'){
+    const stops=item.stops||[];
+    const sh=stops.length?`<div style="margin-top:4px">${stops.map(s=>`<div class="rt-stop-mini ${s.possible?'possible':''}">${RT_STOP_TYPES[s.type]?.icon||'📍'} ${esc(s.name||s.type)}${s.duration?` · ${s.duration}min`:''}${s.possible?' · maybe':''}</div>`).join('')}</div>`:'';
+    return`<div class="event-row" ${click}><span class="event-time">${t}</span><span style="font-size:17px;flex-shrink:0;margin-top:1px">🚗</span><div class="event-info"><div class="event-title">${esc(item.from||'?')} → ${esc(item.to||'?')}</div>${d?`<div class="event-detail">${esc(d)}</div>`:''}${sh}</div></div>`;
+  }
+  return`<div class="event-row" ${click}><span class="event-time">${t}</span><span style="font-size:17px;flex-shrink:0;margin-top:1px">${cat.icon}</span><div class="event-info"><div class="event-title">${lbl}</div>${d?`<div class="event-detail">${esc(d)}</div>`:''}</div></div>`;
+}
+
+function renderDayCard(dayNum,dateStr,nightHotel,events,trip,readonly=false){
+  const lbl=fmtDL(dateStr);
+  const cityH=nightHotel?.city?`<span class="city-badge">📍 ${esc(nightHotel.city)}</span>`:'';
+  const sleepH=nightHotel?`<span class="hotel-badge">🌙 ${esc(nightHotel.title)}</span>`:`<span class="no-hotel">No accommodation set</span>`;
+  const evH=events.length?events.map(e=>renderEvRow(e,trip,readonly)).join(''):`<div class="day-empty" ${readonly?'':` onclick="openItnModal(null,'${dateStr}')"`}>Nothing planned</div>`;
+  const addBtn=readonly?'':`<div class="day-add" onclick="openItnModal(null,'${dateStr}')">＋ Add to this day</div>`;
+  const headCls=readonly?'archived-head':'active-head';
+  return`<div class="day-card"><div class="day-card-head ${headCls}"><div class="day-head-row"><span class="day-num">Day ${dayNum}</span><span class="day-date">${lbl}</span></div><div class="day-meta-row">${cityH}${sleepH}</div></div><div>${evH}${addBtn}</div></div>`;
+}
+
+function buildDayView(trip,readonly=false){
+  if(!trip.start)return'<div class="empty"><div class="eico">🗺️</div><p>Set trip dates to see the day view.</p></div>';
+  const hotels=trip.itinerary.filter(x=>x.category==='hotel');
+  const byDate={};
+  trip.itinerary.filter(x=>x.category!=='hotel').forEach(item=>{const d=item.date||'_u';if(!byDate[d])byDate[d]=[];byDate[d].push(item)});
+  hotels.forEach(h=>{const d=h.checkIn||'_u';if(!byDate[d])byDate[d]=[];byDate[d].push(h)});
+  const end=trip.end||trip.start;
+  const cur=new Date(trip.start+'T12:00:00'),fin=new Date(end+'T12:00:00');
+  let html='',n=1;
+  while(cur<=fin){
+    const ds=cur.toISOString().slice(0,10);
+    const nH=hotels.find(h=>h.checkIn<=ds&&h.checkOut>ds)||null;
+    const ev=(byDate[ds]||[]).slice().sort((a,b)=>((a.category==='hotel'?'00:00':a.time)||'99:99').localeCompare((b.category==='hotel'?'00:00':b.time)||'99:99'));
+    html+=renderDayCard(n,ds,nH,ev,trip,readonly);n++;cur.setDate(cur.getDate()+1);
+  }
+  const undated=byDate['_u']||[];
+  if(undated.length)html+=`<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px"><span style="font-family:'Playfair Display',serif;font-size:13px;color:var(--navy)">Unscheduled</span><div style="flex:1;height:1px;background:var(--border)"></div></div><div style="background:var(--white);border-radius:14px;overflow:hidden">${undated.map(e=>renderEvRow(e,trip,readonly)).join('')}</div>`;
+  return html;
+}
+
+function renderItineraryHTML(trip){
+  const nights=trip.start&&trip.end?dBetween(trip.start,trip.end):null;
+  const banner=trip.start?`<div class="overview-banner"><div class="ov-dates">${fmtDS(trip.start)}${trip.end?' → '+fmtDS(trip.end):''}</div><div class="ov-meta">${nights!==null?nights+' nights · ':''}${trip.itinerary.length} item${trip.itinerary.length!==1?'s':''} planned</div></div>`:'';
+  return banner+buildDayView(trip,false);
+}
+
+// ════ ITINERARY MODAL ════
+function updateItnFields(cat){
+  const allCats=['hotel','flight','train','roadtrip','ferry','restaurant','visit','othertrans','other'];
+  allCats.forEach(g=>{const el=document.getElementById('f-'+g);if(el)el.classList.toggle('show',g===cat)});
+  const tw=document.getElementById('f-title-wrap');tw.style.display=cat==='roadtrip'?'none':'block';
+  if(cat!=='roadtrip')document.getElementById('iTitleLabel').textContent=TITLE_LABELS[cat]||'Name';
+}
+
 function openItnModal(id,preDate){
+  const trip=currentTrip();if(!trip)return;
   editItnId=id;
-  const item=id?S.itinerary.find(x=>x.id===id):null;
-  const cat=item?.category||'visit';
-  const def=preDate||S.tripStart||'';
+  const item=id?trip.itinerary.find(x=>x.id===id):null;
+  const cat=item?.category||'visit';const def=preDate||trip.start||'';
   document.getElementById('itnModalTitle').textContent=id?'Edit Stop':'Add Stop';
   document.getElementById('iCat').value=cat;updateItnFields(cat);
-  document.getElementById('iTitle').value=item?.title||'';
-  document.getElementById('iNotes').value=item?.notes||'';
+  document.getElementById('iTitle').value=item?.title||'';document.getElementById('iNotes').value=item?.notes||'';
   document.getElementById('iCity').value=item?.city||'';
-  setDC('iCheckIn',item?.checkIn||def);setDC('iCheckOut',item?.checkOut||'');
-  document.getElementById('iHotelAddress').value=item?.hotelAddress||'';
-  document.getElementById('iConfirmation').value=item?.confirmationNo||'';
-  document.getElementById('iFrom').value=item?.from||'';document.getElementById('iTo').value=item?.to||'';
-  setDC('iDepartDate',item?.date||def);document.getElementById('iDepartTime').value=item?.time||'';
-  setDC('iArriveDate',item?.arriveDate||'');document.getElementById('iArriveTime').value=item?.arriveTime||'';
-  document.getElementById('iTransRef').value=item?.reference||'';
-  setDC('iRestDate',item?.date||def);document.getElementById('iRestTime').value=item?.time||'';
-  document.getElementById('iRestAddress').value=item?.address||'';document.getElementById('iReservation').value=item?.reservation||'';
-  document.getElementById('iPickupLoc').value=item?.pickupLoc||'';setDC('iPickupDate',item?.date||def);
-  document.getElementById('iPickupTime').value=item?.time||'';document.getElementById('iReturnLoc').value=item?.returnLoc||'';
-  setDC('iReturnDate',item?.returnDate||'');document.getElementById('iReturnTime').value=item?.returnTime||'';
-  document.getElementById('iCarRef').value=item?.reference||'';
-  setDC('iVisitDate',item?.date||def);document.getElementById('iVisitTime').value=item?.time||'';
-  document.getElementById('iVisitAddress').value=item?.address||'';document.getElementById('iTickets').value=item?.tickets||'';
-  setDC('iOtherDate',item?.date||def);document.getElementById('iOtherTime').value=item?.time||'';
-  document.getElementById('iOtherLocation').value=item?.location||'';
+  setDC('iCheckIn',item?.checkIn||def,trip);setDC('iCheckOut',item?.checkOut||'',trip);
+  document.getElementById('iHotelAddress').value=item?.hotelAddress||'';document.getElementById('iConfirmation').value=item?.confirmationNo||'';document.getElementById('iBreakfast').checked=item?.breakfast||false;
+  document.getElementById('iFlightFrom').value=item?.from||'';document.getElementById('iFlightTo').value=item?.to||'';
+  setDC('iFlightDepartDate',item?.date||def,trip);document.getElementById('iFlightDepartTime').value=item?.time||'';
+  setDC('iFlightArriveDate',item?.arriveDate||'',trip);document.getElementById('iFlightArriveTime').value=item?.arriveTime||'';
+  document.getElementById('iAirline').value=item?.airline||'';document.getElementById('iFlightNo').value=item?.flightNo||'';document.getElementById('iFlightClass').value=item?.flightClass||'';document.getElementById('iFlightRef').value=item?.reference||'';
+  document.getElementById('iTrainFrom').value=item?.from||'';document.getElementById('iTrainTo').value=item?.to||'';
+  setDC('iTrainDepartDate',item?.date||def,trip);document.getElementById('iTrainDepartTime').value=item?.time||'';
+  setDC('iTrainArriveDate',item?.arriveDate||'',trip);document.getElementById('iTrainArriveTime').value=item?.arriveTime||'';
+  document.getElementById('iTrainNo').value=item?.trainNo||'';document.getElementById('iTrainSeat').value=item?.seat||'';document.getElementById('iTrainRef').value=item?.reference||'';
+  document.getElementById('iRTFrom').value=item?.from||'';document.getElementById('iRTTo').value=item?.to||'';
+  setDC('iRTDate',item?.date||def,trip);document.getElementById('iRTTime').value=item?.time||'';document.getElementById('iRTCarRef').value=item?.carRef||'';
+  rtStops=item?.stops?JSON.parse(JSON.stringify(item.stops)):[];renderRTStops();
+  document.getElementById('iFerryFrom').value=item?.from||'';document.getElementById('iFerryTo').value=item?.to||'';
+  setDC('iFerryDepartDate',item?.date||def,trip);document.getElementById('iFerryDepartTime').value=item?.time||'';
+  setDC('iFerryArriveDate',item?.arriveDate||'',trip);document.getElementById('iFerryArriveTime').value=item?.arriveTime||'';
+  document.getElementById('iFerryOperator').value=item?.operator||'';document.getElementById('iFerryRef').value=item?.reference||'';
+  setDC('iRestDate',item?.date||def,trip);document.getElementById('iRestTime').value=item?.time||'';
+  document.getElementById('iRestAddress').value=item?.address||'';document.getElementById('iReservation').value=item?.reservation||'';document.getElementById('iCuisine').value=item?.cuisine||'';
+  setDC('iVisitDate',item?.date||def,trip);document.getElementById('iVisitTime').value=item?.time||'';
+  document.getElementById('iVisitAddress').value=item?.address||'';document.getElementById('iVisitDuration').value=item?.duration||'';document.getElementById('iTickets').value=item?.tickets||'';
+  document.getElementById('iOTFrom').value=item?.from||'';document.getElementById('iOTTo').value=item?.to||'';
+  setDC('iOTDate',item?.date||def,trip);document.getElementById('iOTTime').value=item?.time||'';document.getElementById('iOTRef').value=item?.reference||'';
+  setDC('iOtherDate',item?.date||def,trip);document.getElementById('iOtherTime').value=item?.time||'';document.getElementById('iOtherLoc').value=item?.location||'';
   document.getElementById('itnDeleteBtn').style.display=id?'block':'none';
   openModal('modalItinerary');
 }
+
+function addRTStop(){rtStops.push({id:uid(),type:'scenic',name:'',duration:30,possible:false});renderRTStops()}
+function removeRTStop(id){rtStops=rtStops.filter(s=>s.id!==id);renderRTStops()}
+function updateRTStop(id,f,v){const s=rtStops.find(x=>x.id===id);if(s)s[f]=v}
+function renderRTStops(){
+  const c=document.getElementById('rtStopsContainer');if(!c)return;
+  if(!rtStops.length){c.innerHTML=`<p style="font-size:12px;color:var(--slate);text-align:center;padding:6px 0">No stops yet — tap + Add Stop</p>`;return}
+  c.innerHTML=rtStops.map(s=>`<div class="rt-stop-card">
+    <div class="rt-stop-top">
+      <select class="rt-stop-type" onchange="updateRTStop('${s.id}','type',this.value)">${Object.entries(RT_STOP_TYPES).map(([k,v])=>`<option value="${k}" ${s.type===k?'selected':''}>${v.label}</option>`).join('')}</select>
+      <button type="button" class="rt-stop-rm" onclick="removeRTStop('${s.id}')">✕</button>
+    </div>
+    <div class="fg" style="margin-bottom:8px"><input class="finput" type="text" placeholder="Name / description" value="${esc(s.name)}" style="font-size:14px" onchange="updateRTStop('${s.id}','name',this.value)"></div>
+    <div style="display:flex;align-items:center;gap:10px"><input class="finput rt-dur" type="number" placeholder="Mins" value="${s.duration||''}" style="width:80px;font-size:14px;text-align:center" onchange="updateRTStop('${s.id}','duration',+this.value)"><label class="rt-maybe-lbl"><input type="checkbox" ${s.possible?'checked':''} onchange="updateRTStop('${s.id}','possible',this.checked)"> Mark as "possible only"</label></div>
+  </div>`).join('');
+}
+
 function saveItn(){
+  const trip=currentTrip();if(!trip)return;
   const cat=document.getElementById('iCat').value;
-  const title=document.getElementById('iTitle').value.trim();
-  if(!title){toast('Please enter a name');return}
-  let item={id:editItnId||uid(),category:cat,title,notes:document.getElementById('iNotes').value.trim(),addedBy:S.activeUser||'Unknown',createdAt:editItnId?(S.itinerary.find(x=>x.id===editItnId)?.createdAt||Date.now()):Date.now()};
+  let item={id:editItnId||uid(),category:cat,notes:document.getElementById('iNotes').value.trim(),addedBy:APP.activeUser||'Unknown',createdAt:editItnId?(trip.itinerary.find(x=>x.id===editItnId)?.createdAt||Date.now()):Date.now()};
+  const g=v=>document.getElementById(v)?.value||'';
+  const gc=()=>document.getElementById('iTitle').value.trim();
   if(cat==='hotel'){
-    const ci=document.getElementById('iCheckIn').value,co=document.getElementById('iCheckOut').value;
+    const title=gc();if(!title){toast('Please enter hotel name');return}
+    const ci=g('iCheckIn'),co=g('iCheckOut');
     if(!ci){toast('Please enter check-in date');return}if(!co){toast('Please enter check-out date');return}
     if(co<=ci){toast('Check-out must be after check-in');return}
-    item.city=document.getElementById('iCity').value.trim();item.checkIn=ci;item.checkOut=co;
-    item.hotelAddress=document.getElementById('iHotelAddress').value.trim();item.confirmationNo=document.getElementById('iConfirmation').value.trim();
-    item.date=ci;item.nights=daysBetween(ci,co);
-  }else if(cat==='transport'){
-    const dd=document.getElementById('iDepartDate').value;if(!dd){toast('Please enter departure date');return}
-    item.from=document.getElementById('iFrom').value.trim();item.to=document.getElementById('iTo').value.trim();
-    item.date=dd;item.time=document.getElementById('iDepartTime').value;item.arriveDate=document.getElementById('iArriveDate').value;item.arriveTime=document.getElementById('iArriveTime').value;item.reference=document.getElementById('iTransRef').value.trim();
+    Object.assign(item,{title,city:g('iCity'),checkIn:ci,checkOut:co,date:ci,nights:dBetween(ci,co),hotelAddress:g('iHotelAddress'),confirmationNo:g('iConfirmation'),breakfast:document.getElementById('iBreakfast').checked});
+  }else if(cat==='flight'){
+    const title=gc();if(!title){toast('Please enter flight description');return}
+    const dd=g('iFlightDepartDate');if(!dd){toast('Please enter departure date');return}
+    Object.assign(item,{title,from:g('iFlightFrom'),to:g('iFlightTo'),date:dd,time:g('iFlightDepartTime'),arriveDate:g('iFlightArriveDate'),arriveTime:g('iFlightArriveTime'),airline:g('iAirline'),flightNo:g('iFlightNo'),flightClass:g('iFlightClass'),reference:g('iFlightRef')});
+  }else if(cat==='train'){
+    const title=gc();if(!title){toast('Please enter train description');return}
+    const dd=g('iTrainDepartDate');if(!dd){toast('Please enter departure date');return}
+    Object.assign(item,{title,from:g('iTrainFrom'),to:g('iTrainTo'),date:dd,time:g('iTrainDepartTime'),arriveDate:g('iTrainArriveDate'),arriveTime:g('iTrainArriveTime'),trainNo:g('iTrainNo'),seat:g('iTrainSeat'),reference:g('iTrainRef')});
+  }else if(cat==='roadtrip'){
+    const f=g('iRTFrom'),t2=g('iRTTo');if(!f||!t2){toast('Please enter From and To cities');return}
+    const dd=g('iRTDate');if(!dd){toast('Please enter date');return}
+    Object.assign(item,{title:f+' → '+t2,from:f,to:t2,date:dd,time:g('iRTTime'),carRef:g('iRTCarRef'),stops:JSON.parse(JSON.stringify(rtStops))});
+  }else if(cat==='ferry'){
+    const title=gc();if(!title){toast('Please enter ferry description');return}
+    const dd=g('iFerryDepartDate');if(!dd){toast('Please enter departure date');return}
+    Object.assign(item,{title,from:g('iFerryFrom'),to:g('iFerryTo'),date:dd,time:g('iFerryDepartTime'),arriveDate:g('iFerryArriveDate'),arriveTime:g('iFerryArriveTime'),operator:g('iFerryOperator'),reference:g('iFerryRef')});
   }else if(cat==='restaurant'){
-    const rd=document.getElementById('iRestDate').value,rt=document.getElementById('iRestTime').value;
-    if(!rd){toast('Please enter date');return}if(!rt){toast('Time is required for restaurants');return}
-    item.date=rd;item.time=rt;item.address=document.getElementById('iRestAddress').value.trim();item.reservation=document.getElementById('iReservation').value.trim();
-  }else if(cat==='car'){
-    const pd=document.getElementById('iPickupDate').value;if(!pd){toast('Please enter pickup date');return}
-    item.pickupLoc=document.getElementById('iPickupLoc').value.trim();item.date=pd;item.time=document.getElementById('iPickupTime').value;
-    item.returnLoc=document.getElementById('iReturnLoc').value.trim();item.returnDate=document.getElementById('iReturnDate').value;item.returnTime=document.getElementById('iReturnTime').value;item.reference=document.getElementById('iCarRef').value.trim();
+    const title=gc();if(!title){toast('Please enter restaurant name');return}
+    const rd=g('iRestDate'),rt=g('iRestTime');if(!rd){toast('Please enter date');return}if(!rt){toast('Time is required');return}
+    Object.assign(item,{title,date:rd,time:rt,address:g('iRestAddress'),reservation:g('iReservation'),cuisine:g('iCuisine')});
   }else if(cat==='visit'){
-    item.date=document.getElementById('iVisitDate').value;item.time=document.getElementById('iVisitTime').value;item.address=document.getElementById('iVisitAddress').value.trim();item.tickets=document.getElementById('iTickets').value.trim();
+    const title=gc();if(!title){toast('Please enter a name');return}
+    Object.assign(item,{title,date:g('iVisitDate'),time:g('iVisitTime'),address:g('iVisitAddress'),duration:g('iVisitDuration'),tickets:g('iTickets')});
+  }else if(cat==='othertrans'){
+    const title=gc();if(!title){toast('Please enter a description');return}
+    const dd=g('iOTDate');if(!dd){toast('Please enter date');return}
+    Object.assign(item,{title,from:g('iOTFrom'),to:g('iOTTo'),date:dd,time:g('iOTTime'),reference:g('iOTRef')});
   }else{
-    item.date=document.getElementById('iOtherDate').value;item.time=document.getElementById('iOtherTime').value;item.location=document.getElementById('iOtherLocation').value.trim();
+    const title=gc();if(!title){toast('Please enter a title');return}
+    Object.assign(item,{title,date:g('iOtherDate'),time:g('iOtherTime'),location:g('iOtherLoc')});
   }
-  if(editItnId){S.itinerary[S.itinerary.findIndex(x=>x.id===editItnId)]=item}else{S.itinerary.push(item)}
-  save();closeModal('modalItinerary');renderItinerary();toast(editItnId?'Stop updated ✓':'Stop added ✓');
+  if(editItnId){trip.itinerary[trip.itinerary.findIndex(x=>x.id===editItnId)]=item}else{trip.itinerary.push(item)}
+  save();closeModal('modalItinerary');renderContent();toast(editItnId?'Stop updated ✓':'Stop added ✓');
 }
-function deleteItn(){if(!editItnId)return;if(!confirm('Delete this stop?'))return;S.itinerary=S.itinerary.filter(x=>x.id!==editItnId);save();closeModal('modalItinerary');renderItinerary();toast('Stop deleted')}
-
-// Render itinerary
-function buildEventDetail(item){
-  const c=item.category;
-  if(c==='hotel')return[item.city?`📍 ${item.city}`:'',`${item.nights||'?'} night${item.nights!==1?'s':''}`,item.hotelAddress||'',item.confirmationNo?`Conf: ${item.confirmationNo}`:''].filter(Boolean).join(' · ');
-  if(c==='transport')return[item.from&&item.to?`${item.from} → ${item.to}`:'',item.reference||'',item.arriveDate&&item.arriveDate!==item.date?`Arrives ${fmtDateShort(item.arriveDate)}${item.arriveTime?' '+fmtTime(item.arriveTime):''}`:item.arriveTime?`Arrives ${fmtTime(item.arriveTime)}`:''].filter(Boolean).join(' · ');
-  if(c==='restaurant')return[item.address||'',item.reservation?`Res: ${item.reservation}`:''].filter(Boolean).join(' · ');
-  if(c==='car')return[item.pickupLoc||'',item.returnLoc&&item.returnLoc!==item.pickupLoc?`→ Return: ${item.returnLoc}`:'',item.returnDate?`Return ${fmtDateShort(item.returnDate)}`:'',item.reference||''].filter(Boolean).join(' · ');
-  return item.address||item.location||item.tickets||'';
-}
-function renderEventRow(item){
-  const cat=ICAT[item.category]||ICAT.other;
-  const timeStr=item.time?fmtTime(item.time):'';
-  const detail=buildEventDetail(item);
-  const lbl=item.category==='hotel'?`Check in — ${esc(item.title)}`:esc(item.title);
-  return`<div class="event-row" onclick="openItnModal('${item.id}',null)">
-    <span class="event-time">${timeStr}</span>
-    <span style="font-size:17px;flex-shrink:0;margin-top:1px">${cat.icon}</span>
-    <div class="event-info"><div class="event-title">${lbl}</div>${detail?`<div class="event-detail">${esc(detail)}</div>`:''}</div>
-  </div>`;
-}
-function renderDayCard(dayNum,dateStr,nightHotel,events){
-  const dayLabel=fmtDayLabel(dateStr);
-  const cityHtml=nightHotel?.city?`<span class="city-badge">📍 ${esc(nightHotel.city)}</span>`:'';
-  const sleepHtml=nightHotel?`<span class="hotel-badge">🌙 ${esc(nightHotel.title)}</span>`:`<span class="no-hotel">No accommodation set</span>`;
-  const eventsHtml=events.length?events.map(renderEventRow).join(''):`<div class="day-empty" onclick="openItnModal(null,'${dateStr}')">Nothing planned — tap to add</div>`;
-  return`<div class="day-card"><div class="day-card-head"><div class="day-head-row"><span class="day-num">Day ${dayNum}</span><span class="day-date">${dayLabel}</span></div><div class="day-meta-row">${cityHtml}${sleepHtml}</div></div><div>${eventsHtml}<div class="day-add" onclick="openItnModal(null,'${dateStr}')">＋ Add to this day</div></div></div>`;
-}
-function renderItinerary(){
-  const el=document.getElementById('itnContent');
-  const hotels=S.itinerary.filter(x=>x.category==='hotel');
-  let html='';
-  if(!S.hasExported&&(S.itinerary.length+S.expenses.length)>0){
-    html+=`<div class="nudge-banner" onclick="openModal('modalBackup')"><span style="font-size:20px">💾</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#92600A">Back up your data</div><div style="font-size:12px;color:#A07030;margin-top:1px">Tap to export — data is lost if you clear your browser</div></div><span style="color:#A07030;font-size:18px">›</span></div>`;
-  }
-  if(S.tripStart){
-    const nights=S.tripEnd?daysBetween(S.tripStart,S.tripEnd):null;
-    html+=`<div class="overview-banner"><div class="ov-dates">${fmtDateShort(S.tripStart)}${S.tripEnd?' → '+fmtDateShort(S.tripEnd):''}</div><div class="ov-meta">${nights!==null?nights+' nights · ':''}${S.itinerary.length} item${S.itinerary.length!==1?'s':''} planned</div></div>`;
-  }else{
-    html+=`<div style="background:#EEF2F9;border:1.5px dashed #B8C8E0;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openTripDatesModal()"><span style="font-size:20px">📅</span><div><div style="font-size:13px;font-weight:600;color:var(--navy)">Set your trip dates</div><div style="font-size:12px;color:var(--slate);margin-top:1px">Tap to enter your travel window</div></div></div>`;
-  }
-  if(!S.tripStart){
-    if(!S.itinerary.length){el.innerHTML=html+`<div class="empty"><div class="eico">🗺️</div><p>No stops yet.<br>Tap <strong>+</strong> to add your first stop!</p></div>`;return}
-    const sorted=[...S.itinerary].sort((a,b)=>((a.date||a.checkIn||'9999')+(a.time||'99:99')).localeCompare((b.date||b.checkIn||'9999')+(b.time||'99:99')));
-    html+=`<div style="background:var(--white);border-radius:14px;box-shadow:0 1px 5px rgba(15,35,64,.08);overflow:hidden">${sorted.map(renderEventRow).join('')}</div>`;
-    el.innerHTML=html;return;
-  }
-  const byDate={};
-  S.itinerary.filter(x=>x.category!=='hotel').forEach(item=>{const d=item.date||'_undated';if(!byDate[d])byDate[d]=[];byDate[d].push(item)});
-  hotels.forEach(h=>{const d=h.checkIn||'_undated';if(!byDate[d])byDate[d]=[];byDate[d].push(h)});
-  const endDate=S.tripEnd||S.tripStart;
-  const cur=new Date(S.tripStart+'T12:00:00'),fin=new Date(endDate+'T12:00:00');
-  let dayNum=1;
-  while(cur<=fin){
-    const ds=cur.toISOString().slice(0,10);
-    const nightHotel=hotels.find(h=>h.checkIn<=ds&&h.checkOut>ds)||null;
-    const dayEvents=(byDate[ds]||[]).slice().sort((a,b)=>((a.category==='hotel'?'00:00':a.time)||'99:99').localeCompare((b.category==='hotel'?'00:00':b.time)||'99:99'));
-    html+=renderDayCard(dayNum,ds,nightHotel,dayEvents);dayNum++;cur.setDate(cur.getDate()+1);
-  }
-  const undated=byDate['_undated']||[];
-  if(undated.length){html+=`<div style="display:flex;align-items:center;gap:10px;margin:16px 0 8px"><span style="font-family:'Playfair Display',serif;font-size:13px;color:var(--navy)">Unscheduled</span><div style="flex:1;height:1px;background:var(--border)"></div></div><div style="background:var(--white);border-radius:14px;overflow:hidden">${undated.map(renderEventRow).join('')}</div>`}
-  el.innerHTML=html;
+function deleteItn(){
+  const trip=currentTrip();if(!trip||!editItnId)return;
+  if(!confirm('Delete this stop?'))return;
+  trip.itinerary=trip.itinerary.filter(x=>x.id!==editItnId);
+  save();closeModal('modalItinerary');renderContent();toast('Stop deleted');
 }
 
-// Expenses
+// ════ EXPENSES ════
+function renderExpensesHTML(trip){
+  const total=trip.expenses.reduce((s,e)=>s+e.amountSGD,0);
+  const myExps=trip.expenses.filter(e=>e.paidBy===APP.activeUser);
+  const myTotal=myExps.reduce((s,e)=>s+e.amountSGD,0);
+  const strip=`<div class="sum-strip"><div><div class="sum-lbl">Group Total</div><div class="sum-val">S$${fmt(total)}</div><div class="sum-sub">${trip.expenses.length} expense${trip.expenses.length!==1?'s':''}</div></div><div style="text-align:right"><div class="sum-lbl">You Paid</div><div class="sum-val">S$${fmt(myTotal)}</div><div class="sum-sub">${myExps.length} expense${myExps.length!==1?'s':''}</div></div></div>`;
+  if(!trip.expenses.length)return strip+`<div class="empty"><div class="eico">💳</div><p>No expenses yet.<br>Tap <strong>+</strong> to log your first!</p></div>`;
+  const sorted=[...trip.expenses].sort((a,b)=>{const da=a.date||'0000',db=b.date||'0000';return db!==da?db.localeCompare(da):(b.createdAt||0)-(a.createdAt||0)});
+  return strip+sorted.map(exp=>{
+    const cat=ECAT[exp.category]||ECAT.other;const sym=ALL_CURRENCIES[exp.currency]?.symbol||exp.currency;
+    const all=APP.travellers.every(t=>exp.sharedAmong?.includes(t));const share=all?`All ${APP.travellers.length}`:exp.sharedAmong?.join(', ')||'';
+    return`<div class="exp-item" onclick="openExpModal('${exp.id}')"><div class="exp-bar" style="background:${cat.color}"></div><div class="exp-body"><span class="exp-icon">${cat.icon}</span><div class="exp-info"><div class="exp-desc">${esc(exp.description)}</div><div class="exp-sub">Paid by <strong>${esc(exp.paidBy)}</strong> · ${share}</div>${exp.date?`<div class="exp-sub">${fmtDS(exp.date)}</div>`:''}</div><div class="exp-right"><div class="exp-amt">${sym}${fmt(exp.amount)}</div>${exp.currency!=='SGD'?`<div class="exp-sgd">S$${fmt(exp.amountSGD)}</div>`:''}</div></div></div>`;
+  }).join('');
+}
+
 function openExpModal(id){
-  editExpId=id;const exp=id?S.expenses.find(x=>x.id===id):null;const active=S.activeUser||S.travellers[0];
+  const trip=currentTrip();if(!trip)return;
+  editExpId=id;const exp=id?trip.expenses.find(x=>x.id===id):null;const active=APP.activeUser||APP.travellers[0];
   document.getElementById('expModalTitle').textContent=id?'Edit Expense':'Add Expense';
   document.getElementById('eDesc').value=exp?.description||'';document.getElementById('eAmt').value=exp?.amount||'';
-  document.getElementById('eCur').value=exp?.currency||'SGD';document.getElementById('eCat').value=exp?.category||'food';
-  const eDateEl=document.getElementById('eDate');
-  eDateEl.value=exp?.date||S.tripStart||today();
-  if(S.tripStart)eDateEl.min=S.tripStart;if(S.tripEnd)eDateEl.max=S.tripEnd;
-  document.getElementById('ePaidBy').innerHTML=S.travellers.map(t=>`<option value="${esc(t)}" ${(exp?.paidBy||active)===t?'selected':''}>${esc(t)}</option>`).join('');
-  const def=exp?.sharedAmong||[...S.travellers];
-  document.getElementById('eShared').innerHTML=S.travellers.map(t=>`<label class="pill ${def.includes(t)?'on':''}"><input type="checkbox" value="${esc(t)}" ${def.includes(t)?'checked':''} onchange="this.parentElement.classList.toggle('on',this.checked)">${esc(t)}</label>`).join('');
+  // Currency dropdown from trip's active currencies
+  const curs=trip.activeCurrencies||['SGD','USD','EUR','GBP'];
+  document.getElementById('eCur').innerHTML=curs.map(c=>`<option value="${c}" ${(exp?.currency||'SGD')===c?'selected':''}>${c} ${ALL_CURRENCIES[c]?.symbol||''}</option>`).join('');
+  document.getElementById('eCat').value=exp?.category||'food';
+  const eDateEl=document.getElementById('eDate');eDateEl.value=exp?.date||trip.start||today();
+  if(trip.start)eDateEl.min=trip.start;if(trip.end)eDateEl.max=trip.end;
+  document.getElementById('ePaidBy').innerHTML=APP.travellers.map(t=>`<option value="${esc(t)}" ${(exp?.paidBy||active)===t?'selected':''}>${esc(t)}</option>`).join('');
+  const def=exp?.sharedAmong||[...APP.travellers];
+  document.getElementById('eShared').innerHTML=APP.travellers.map(t=>`<label class="pill ${def.includes(t)?'on':''}"><input type="checkbox" value="${esc(t)}" ${def.includes(t)?'checked':''} onchange="this.parentElement.classList.toggle('on',this.checked)">${esc(t)}</label>`).join('');
   document.getElementById('expDeleteBtn').style.display=id?'block':'none';openModal('modalExpense');
 }
 function saveExp(){
+  const trip=currentTrip();if(!trip)return;
   const description=document.getElementById('eDesc').value.trim();const amount=parseFloat(document.getElementById('eAmt').value);
   if(!description){toast('Please enter a description');return}if(!amount||amount<=0){toast('Please enter a valid amount');return}
   const currency=document.getElementById('eCur').value;
   const sharedAmong=Array.from(document.querySelectorAll('#eShared input:checked')).map(c=>c.value);
   if(!sharedAmong.length){toast('Select at least one person');return}
-  const exp={id:editExpId||uid(),description,amount,currency,amountSGD:toSGD(amount,currency),category:document.getElementById('eCat').value,date:document.getElementById('eDate').value,paidBy:document.getElementById('ePaidBy').value,sharedAmong,addedBy:S.activeUser||'Unknown',createdAt:editExpId?(S.expenses.find(x=>x.id===editExpId)?.createdAt||Date.now()):Date.now()};
-  if(editExpId){S.expenses[S.expenses.findIndex(x=>x.id===editExpId)]=exp}else{S.expenses.push(exp)}
-  save();closeModal('modalExpense');renderExpenses();toast(editExpId?'Expense updated ✓':'Expense added ✓');
+  const exp={id:editExpId||uid(),description,amount,currency,amountSGD:toSGD(amount,currency,trip),category:document.getElementById('eCat').value,date:document.getElementById('eDate').value,paidBy:document.getElementById('ePaidBy').value,sharedAmong,addedBy:APP.activeUser||'Unknown',createdAt:editExpId?(trip.expenses.find(x=>x.id===editExpId)?.createdAt||Date.now()):Date.now()};
+  if(editExpId){trip.expenses[trip.expenses.findIndex(x=>x.id===editExpId)]=exp}else{trip.expenses.push(exp)}
+  save();closeModal('modalExpense');renderContent();toast(editExpId?'Expense updated ✓':'Expense added ✓');
 }
-function deleteExp(){if(!editExpId)return;if(!confirm('Delete this expense?'))return;S.expenses=S.expenses.filter(x=>x.id!==editExpId);save();closeModal('modalExpense');renderExpenses();toast('Expense deleted')}
-function renderExpenses(){
-  const total=S.expenses.reduce((s,e)=>s+e.amountSGD,0);const myExps=S.expenses.filter(e=>e.paidBy===S.activeUser);const myTotal=myExps.reduce((s,e)=>s+e.amountSGD,0);
-  document.getElementById('expStrip').innerHTML=`<div class="sum-strip"><div><div class="sum-lbl">Group Total</div><div class="sum-val">S$${fmt(total)}</div><div class="sum-sub">${S.expenses.length} expense${S.expenses.length!==1?'s':''}</div></div><div style="text-align:right"><div class="sum-lbl">You Paid</div><div class="sum-val">S$${fmt(myTotal)}</div><div class="sum-sub">${myExps.length} expense${myExps.length!==1?'s':''}</div></div></div>`;
-  const el=document.getElementById('expContent');
-  if(!S.expenses.length){el.innerHTML=`<div class="empty"><div class="eico">💳</div><p>No expenses yet.<br>Tap <strong>+</strong> to log your first!</p></div>`;return}
-  const sorted=[...S.expenses].sort((a,b)=>{const da=a.date||'0000',db=b.date||'0000';return db!==da?db.localeCompare(da):(b.createdAt||0)-(a.createdAt||0)});
-  el.innerHTML=sorted.map(exp=>{const cat=ECAT[exp.category]||ECAT.other;const sym=CSYM[exp.currency]||exp.currency;const all=S.travellers.every(t=>exp.sharedAmong.includes(t));const share=all?`All ${S.travellers.length}`:exp.sharedAmong.join(', ');
-    return`<div class="exp-item" onclick="openExpModal('${exp.id}')"><div class="exp-bar" style="background:${cat.color}"></div><div class="exp-body"><span class="exp-icon">${cat.icon}</span><div class="exp-info"><div class="exp-desc">${esc(exp.description)}</div><div class="exp-sub">Paid by <strong>${esc(exp.paidBy)}</strong> · ${share}</div>${exp.date?`<div class="exp-sub">${fmtDateShort(exp.date)}</div>`:''}</div><div class="exp-right"><div class="exp-amt">${sym}${fmt(exp.amount)}</div>${exp.currency!=='SGD'?`<div class="exp-sgd">S$${fmt(exp.amountSGD)}</div>`:''}</div></div></div>`;
-  }).join('');
+function deleteExp(){
+  const trip=currentTrip();if(!trip||!editExpId)return;
+  if(!confirm('Delete this expense?'))return;
+  trip.expenses=trip.expenses.filter(x=>x.id!==editExpId);
+  save();closeModal('modalExpense');renderContent();toast('Expense deleted');
 }
 
-// Settlement
-function calcSettlement(){
-  const bal={};S.travellers.forEach(t=>bal[t]=0);
-  S.expenses.forEach(exp=>{if(!exp.sharedAmong?.length)return;const share=exp.amountSGD/exp.sharedAmong.length;exp.sharedAmong.forEach(p=>{if(bal[p]!==undefined)bal[p]-=share});if(bal[exp.paidBy]!==undefined)bal[exp.paidBy]+=exp.amountSGD});
-  const EPS=0.005;const C=S.travellers.filter(t=>bal[t]>EPS).map(t=>({name:t,amt:bal[t]})).sort((a,b)=>b.amt-a.amt);const D=S.travellers.filter(t=>bal[t]<-EPS).map(t=>({name:t,amt:-bal[t]})).sort((a,b)=>b.amt-a.amt);
+// ════ SETTLEMENT ════
+function setSettleCurrency(code){
+  const trip=currentTrip();if(!trip)return;
+  trip._settleCur=code;
+  renderContent();
+}
+function calcSettlement(trip){
+  const bal={};APP.travellers.forEach(t=>bal[t]=0);
+  trip.expenses.forEach(exp=>{if(!exp.sharedAmong?.length)return;const share=exp.amountSGD/exp.sharedAmong.length;exp.sharedAmong.forEach(p=>{if(bal[p]!==undefined)bal[p]-=share});if(bal[exp.paidBy]!==undefined)bal[exp.paidBy]+=exp.amountSGD});
+  const EPS=0.005;
+  const C=APP.travellers.filter(t=>bal[t]>EPS).map(t=>({name:t,amt:bal[t]})).sort((a,b)=>b.amt-a.amt);
+  const D=APP.travellers.filter(t=>bal[t]<-EPS).map(t=>({name:t,amt:-bal[t]})).sort((a,b)=>b.amt-a.amt);
   const txns=[];let ci=0,di=0;const Cc=C.map(x=>({...x})),Dd=D.map(x=>({...x}));
   while(di<Dd.length&&ci<Cc.length){const a=Math.min(Dd[di].amt,Cc[ci].amt);if(a>EPS)txns.push({from:Dd[di].name,to:Cc[ci].name,amount:a});Dd[di].amt-=a;Cc[ci].amt-=a;if(Dd[di].amt<EPS)di++;if(Cc[ci].amt<EPS)ci++}
   return{bal,txns};
 }
-function renderSettle(){
-  const el=document.getElementById('settleContent');
-  if(!S.expenses.length){el.innerHTML=`<div class="empty"><div class="eico">🤝</div><p>Log expenses first to see who owes what.</p></div>`;return}
-  const{bal,txns}=calcSettlement();
-  let html=`<p class="sec-title">Balances</p>`;
-  S.travellers.forEach((t,i)=>{const b=bal[t]||0;const cls=b>0.005?'pos':b<-0.005?'neg':'zero';const pre=b>0.005?'+':'';const desc=b>0.005?'is owed':b<-0.005?'owes':'settled';
-    html+=`<div class="bal-card"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${AVATARS[i]||'👤'}</span><div><div class="bal-name">${esc(t)}</div><div class="bal-status">${desc}</div></div></div><div style="text-align:right"><div class="bal-amt ${cls}">${pre}S$${fmt(Math.abs(b))}</div></div></div>`;
+
+function renderSettleHTML(trip){
+  if(!trip.expenses.length)return`<div class="empty"><div class="eico">🤝</div><p>Log expenses first to see who owes what.</p></div>`;
+  // Settlement currency selector
+  const settleCur=trip._settleCur||'SGD';
+  const curs=trip.activeCurrencies||['SGD'];
+  const settleRate=settleCur==='SGD'?1:(1/(trip.rates?.[settleCur]||ALL_CURRENCIES[settleCur]?.rate||1));
+  const sym=(trip.customCurrencies?.[settleCur]?.symbol)||ALL_CURRENCIES[settleCur]?.symbol||settleCur;
+  function toSettle(sgd){return(sgd*settleRate).toFixed(2)}
+  const curSelector=`<div style="display:flex;align-items:center;justify-content:space-between;background:var(--white);border-radius:12px;padding:12px 16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(15,35,64,.06)">
+    <span style="font-size:13px;font-weight:600;color:var(--navy)">Settle in</span>
+    <select style="border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:#fff;-webkit-appearance:none;cursor:pointer" onchange="setSettleCurrency(this.value)">
+      ${curs.map(c=>`<option value="${c}" ${c===settleCur?'selected':''}>${c} ${(trip.customCurrencies?.[c]?.symbol)||ALL_CURRENCIES[c]?.symbol||''}</option>`).join('')}
+    </select>
+  </div>`;
+  const{bal,txns}=calcSettlement(trip);
+  let html=curSelector+`<p class="sec-title">Balances</p>`;
+  APP.travellers.forEach((t,i)=>{const b=bal[t]||0;const cls=b>0.005?'pos':b<-0.005?'neg':'zero';const pre=b>0.005?'+':'';const desc=b>0.005?'is owed':b<-0.005?'owes':'settled';
+    html+=`<div class="bal-card"><div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${AVATARS[i]||'👤'}</span><div><div class="bal-name">${esc(t)}</div><div class="bal-status">${desc}</div></div></div><div style="text-align:right"><div class="bal-amt ${cls}">${pre}${sym}${toSettle(Math.abs(b))}</div></div></div>`;
   });
   html+=`<p class="sec-title">How to Settle Up</p>`;
-  if(!txns.length){html+=`<div class="bal-card" style="justify-content:center;gap:8px;color:var(--green)"><span style="font-size:20px">✅</span><strong>All settled!</strong></div>`}
-  else{txns.forEach(tx=>{html+=`<div class="txn-item"><strong>${esc(tx.from)}</strong><span class="txn-arrow">→</span><strong>${esc(tx.to)}</strong><span class="txn-amt">S$${fmt(tx.amount)}</span></div>`})}
-  const catTot={};S.expenses.forEach(e=>{catTot[e.category]=(catTot[e.category]||0)+e.amountSGD});
+  if(!txns.length)html+=`<div class="bal-card" style="justify-content:center;gap:8px;color:var(--green)"><span>✅</span><strong>All settled!</strong></div>`;
+  else txns.forEach(tx=>{html+=`<div class="txn-item"><strong>${esc(tx.from)}</strong><span class="txn-arrow">→</span><strong>${esc(tx.to)}</strong><span class="txn-amt">${sym}${toSettle(tx.amount)}</span></div>`});
+  const catTot={};trip.expenses.forEach(e=>{catTot[e.category]=(catTot[e.category]||0)+e.amountSGD});
   const grand=Object.values(catTot).reduce((a,b)=>a+b,0);
   html+=`<p class="sec-title">Spend by Category</p><div style="background:var(--white);border-radius:14px;padding:2px 16px;box-shadow:0 1px 4px rgba(15,35,64,.06)">`;
-  Object.entries(catTot).sort((a,b)=>b[1]-a[1]).forEach(([cat,tot])=>{const c=ECAT[cat]||ECAT.other;const pct=grand>0?tot/grand*100:0;html+=`<div class="cat-row"><span style="font-size:16px">${c.icon}</span><span style="font-size:12px;width:90px;flex-shrink:0">${c.label}</span><div class="bar-bg"><div class="bar-fill" style="width:${pct.toFixed(1)}%;background:${c.color}"></div></div><span class="cat-amt">S$${fmt(tot)}</span></div>`});
+  Object.entries(catTot).sort((a,b)=>b[1]-a[1]).forEach(([cat,tot])=>{const c=ECAT[cat]||ECAT.other;html+=`<div class="cat-row"><span style="font-size:16px">${c.icon}</span><span style="font-size:12px;width:90px;flex-shrink:0">${c.label}</span><div class="bar-bg"><div class="bar-fill" style="width:${(grand>0?tot/grand*100:0).toFixed(1)}%;background:${c.color}"></div></div><span class="cat-amt">S$${fmt(tot)}</span></div>`});
   html+=`</div>`;
-  const pTot={};S.travellers.forEach(t=>pTot[t]=0);S.expenses.forEach(e=>{if(!e.sharedAmong?.length)return;const share=e.amountSGD/e.sharedAmong.length;e.sharedAmong.forEach(p=>{if(pTot[p]!==undefined)pTot[p]+=share})});
+  const pTot={};APP.travellers.forEach(t=>pTot[t]=0);trip.expenses.forEach(e=>{if(!e.sharedAmong?.length)return;const share=e.amountSGD/e.sharedAmong.length;e.sharedAmong.forEach(p=>{if(pTot[p]!==undefined)pTot[p]+=share})});
   const maxP=Math.max(...Object.values(pTot),1);
   html+=`<p class="sec-title">Spend per Person</p><div style="background:var(--white);border-radius:14px;padding:2px 16px;box-shadow:0 1px 4px rgba(15,35,64,.06)">`;
-  S.travellers.forEach((t,i)=>{const tot=pTot[t]||0;html+=`<div class="cat-row"><span style="font-size:16px">${AVATARS[i]||'👤'}</span><span style="font-size:12px;width:90px;flex-shrink:0">${esc(t)}</span><div class="bar-bg"><div class="bar-fill" style="width:${(tot/maxP*100).toFixed(1)}%;background:var(--navy)"></div></div><span class="cat-amt">S$${fmt(tot)}</span></div>`});
-  html+=`</div>`;el.innerHTML=html;
+  APP.travellers.forEach((t,i)=>{const tot=pTot[t]||0;html+=`<div class="cat-row"><span style="font-size:16px">${AVATARS[i]||'👤'}</span><span style="font-size:12px;width:90px;flex-shrink:0">${esc(t)}</span><div class="bar-bg"><div class="bar-fill" style="width:${(tot/maxP*100).toFixed(1)}%;background:var(--navy)"></div></div><span class="cat-amt">S$${fmt(tot)}</span></div>`});
+  return html+`</div>`;
 }
 
-// Settings
-function renderSettings(){
-  const n=S.travellers.length;
-  document.getElementById('settingsContent').innerHTML=`
-    <p class="sec-title">Trip Dates</p>
-    <div class="settings-card">
-      <div class="s-row"><span class="s-lbl">Start Date</span><input type="date" class="s-rate" style="font-size:15px" value="${S.tripStart||''}" onchange="updateTripDate('tripStart',this.value)"></div>
-      <div class="s-row"><span class="s-lbl">End Date</span><input type="date" class="s-rate" style="font-size:15px" value="${S.tripEnd||''}" onchange="updateTripDate('tripEnd',this.value)"></div>
+// ════ ARCHIVED VIEWS ════
+function renderTimelineHTML(trip){
+  const nights=trip.start&&trip.end?dBetween(trip.start,trip.end):null;
+  const banner=`<div class="overview-banner" style="background:#2D1A4A"><div class="ov-dates">${fmtDS(trip.start)}${trip.end?' → '+fmtDS(trip.end):''}</div><div class="ov-meta">${nights!==null?nights+' nights · ':''}${trip.itinerary.length} stops · Archived ${fmtFull(trip.archivedAt?new Date(trip.archivedAt).toISOString().slice(0,10):'')}</div></div>`;
+  return banner+buildDayView(trip,true);
+}
+
+function renderMemoriesHTML(trip){
+  if(!trip.start)return`<div class="empty"><div class="eico">📖</div><p>No trip dates set.</p></div>`;
+  const end=trip.end||trip.start;
+  const cur=new Date(trip.start+'T12:00:00'),fin=new Date(end+'T12:00:00');
+  const hotels=trip.itinerary.filter(x=>x.category==='hotel');
+  let html=`<div style="background:#2D1A4A;border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:14px"><div style="font-family:'Playfair Display',serif;font-size:17px;margin-bottom:3px">📖 ${esc(trip.name)}</div><div style="font-size:11px;opacity:.55">${Object.keys(trip.memories||{}).length} memories recorded · Tap a day to add highlights</div></div>`;
+  let n=1;
+  while(cur<=fin){
+    const ds=cur.toISOString().slice(0,10);
+    const nH=hotels.find(h=>h.checkIn<=ds&&h.checkOut>ds)||null;
+    const mem=(trip.memories||{})[ds];
+    const avgRating=mem?.ratings?Object.values(mem.ratings).reduce((a,b)=>a+b,0)/Object.values(mem.ratings).length:null;
+    const starStr=avgRating?'★'.repeat(Math.round(avgRating))+'☆'.repeat(5-Math.round(avgRating)):'';
+    html+=`<div class="memory-day-card">
+      <div class="memory-day-head">
+        <div><div class="memory-day-date">Day ${n} · ${fmtDL(ds)}</div>${nH?`<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">🌙 ${esc(nH.title)}</div>`:''}</div>
+        <div>${avgRating?`<span class="memory-day-rating">${starStr} ${fmt(avgRating,1)}</span>`:''}</div>
+      </div>`;
+    if(mem?.highlight||mem?.photoLink||mem?.notes){
+      html+=`<div class="memory-body">`;
+      if(mem.highlight)html+=`<div class="memory-highlight">"${esc(mem.highlight)}"</div>`;
+      if(mem.photoLink)html+=`<a href="${esc(mem.photoLink)}" target="_blank" class="memory-photo-link">📸 View Photo Album</a>`;
+      if(mem.notes)html+=`<div style="font-size:12px;color:var(--slate);margin-bottom:8px">${esc(mem.notes)}</div>`;
+      if(mem.ratings&&Object.keys(mem.ratings).length){
+        html+=`<div class="memory-ratings">`;
+        Object.entries(mem.ratings).forEach(([name,r])=>{html+=`<div class="rating-chip">${esc(name)} ${'★'.repeat(r)}${'☆'.repeat(5-r)}</div>`});
+        html+=`</div>`;
+      }
+      html+=`<div style="text-align:right;margin-top:10px"><button class="memory-edit-btn" onclick="openMemoryModal('${ds}')">Edit ✏️</button></div>`;
+      html+=`</div>`;
+    }else{
+      html+=`<div class="memory-empty"><span style="font-size:13px;color:var(--slate)">No memory added yet</span><button class="memory-edit-btn" onclick="openMemoryModal('${ds}')">+ Add Memory</button></div>`;
+    }
+    html+=`</div>`;n++;cur.setDate(cur.getDate()+1);
+  }
+  return html;
+}
+
+function openMemoryModal(date){
+  const trip=currentTrip();if(!trip)return;
+  memEditDate=date;
+  const mem=(trip.memories||{})[date]||{};
+  document.getElementById('memModalTitle').textContent=`Memory — ${fmtDL(date)}`;
+  document.getElementById('memHighlight').value=mem.highlight||'';
+  document.getElementById('memPhotoLink').value=mem.photoLink||'';
+  document.getElementById('memNotes').value=mem.notes||'';
+  // Render star ratings per traveller
+  const ratings=mem.ratings||{};
+  document.getElementById('memRatings').innerHTML=APP.travellers.map((name,i)=>{
+    const r=ratings[name]||0;
+    return`<div class="rating-row"><span class="rating-name">${esc(name)}</span><div class="stars">${[1,2,3,4,5].map(n=>`<span class="star ${r>=n?'on':''}" onclick="setMemRating('${esc(name)}',${n})">★</span>`).join('')}</div></div>`;
+  }).join('');
+  openModal('modalMemory');
+}
+function setMemRating(name,val){
+  // Update stars visually — full re-render of the modal ratings
+  const memRatingsEl=document.getElementById('memRatings');
+  const stars=memRatingsEl.querySelectorAll('.rating-row');
+  stars.forEach(row=>{
+    const rowName=row.querySelector('.rating-name').textContent;
+    if(rowName===name){
+      row.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<val));
+      row.dataset.val=val;
+    }
+  });
+}
+function saveMemory(){
+  const trip=currentTrip();if(!trip||!memEditDate)return;
+  if(!trip.memories)trip.memories={};
+  // Collect ratings
+  const ratings={};
+  document.querySelectorAll('#memRatings .rating-row').forEach(row=>{
+    const name=row.querySelector('.rating-name').textContent;
+    const filled=row.querySelectorAll('.star.on').length;
+    if(filled>0)ratings[name]=filled;
+  });
+  trip.memories[memEditDate]={
+    highlight:document.getElementById('memHighlight').value.trim(),
+    photoLink:document.getElementById('memPhotoLink').value.trim(),
+    notes:document.getElementById('memNotes').value.trim(),
+    ratings,
+    updatedAt:Date.now(),
+  };
+  save();closeModal('modalMemory');renderContent();toast('Memory saved ✓');
+}
+
+function renderArchiveExpHTML(trip){
+  const{bal,txns}=calcSettlement(trip);
+  let html=`<div style="background:#2D1A4A;border-radius:14px;padding:14px 16px;color:#fff;margin-bottom:14px"><div style="font-family:'Playfair Display',serif;font-size:16px">Final Expenses — ${esc(trip.name)}</div><div style="font-size:11px;opacity:.5;margin-top:2px">S$${fmt(trip.expenses.reduce((s,e)=>s+e.amountSGD,0))} total · ${trip.expenses.length} expenses</div></div>`;
+  html+=renderSettleHTML(trip);
+  return html;
+}
+
+// ════ SETTINGS ════
+function renderSettingsHTML(){
+  const trip=currentTrip();
+  const n=APP.travellers.length;
+  const curs=trip?.activeCurrencies||['SGD','USD','EUR','GBP'];
+  return`
+    <p class="sec-title">☁️ Live Cloud Sync</p>
+    <div style="background:var(--white);border-radius:14px;padding:12px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,35,64,.06)">
+      <p style="font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:12px">Connect to JSONBin.io for real-time sync. <a href="https://jsonbin.io" target="_blank" style="color:var(--navy);font-weight:600">Get free API key →</a></p>
+      <div style="margin-bottom:10px"><div class="flabel">API Key</div><input class="finput" type="password" value="${esc(APP.cloudApiKey||'')}" placeholder="$2a$10$..." style="font-size:14px" onchange="APP.cloudApiKey=this.value.trim();save()"></div>
+      <div style="margin-bottom:12px"><div class="flabel">Trip Code (Bin ID)</div><input class="finput" type="text" value="${esc(APP.cloudBinId||'')}" placeholder="64abc123..." style="font-size:14px" onchange="APP.cloudBinId=this.value.trim();save()"></div>
+      ${!APP.cloudBinId?`<button class="btn-primary" onclick="createBin()" style="margin-top:0">🆕 Create new shared trip</button>`:
+      `<div style="display:flex;gap:8px"><button onclick="syncFromCloud(true)" style="flex:1;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer">🔄 Sync Now</button><button onclick="syncToCloud()" style="flex:1;padding:11px;background:var(--vellum);color:var(--navy);border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer">📤 Push</button></div>
+      <div style="background:#EEF6F0;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#2D4A38"><strong>Trip Code:</strong> <code style="color:var(--navy)">${esc(APP.cloudBinId)}</code></div>`}
     </div>
-    <p class="sec-title">Trip Name</p>
-    <div class="settings-card"><div class="s-row"><span style="font-size:20px">🗺️</span><input class="s-input" value="${esc(S.tripName)}" placeholder="Trip name" oninput="S.tripName=this.value.trim()||'Our Trip';save();updateHeader()"></div></div>
+
+    <p class="sec-title">My Trips</p>
+    <div style="background:var(--white);border-radius:14px;padding:12px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,35,64,.06)">
+      ${trip?`<div style="margin-bottom:12px"><div style="font-size:13px;font-weight:600;margin-bottom:4px">${esc(trip.name)}</div><div style="font-size:12px;color:var(--slate)">${trip.start?fmtDS(trip.start):''}${trip.end?' → '+fmtDS(trip.end):''}</div></div>
+      <button class="btn-sm-out" onclick="openArchiveModal()" style="margin-bottom:8px;width:100%">📦 Archive this trip</button>`:''}
+      <button class="btn-sm-out" onclick="goToLibrary()" style="width:100%">↩ Switch Trip / Library</button>
+      <button class="btn-sm" onclick="openNewTripModal()" style="margin-top:8px;width:100%">+ New Trip</button>
+    </div>
+
     <p class="sec-title">Group</p>
     <div class="settings-card">
       <div class="s-row"><span class="s-lbl">Number of people</span>
-        <select class="s-rate" onchange="resizeTravellers(+this.value)">
-          ${[2,3,4,5,6].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v} people</option>`).join('')}
-        </select>
-      </div>
-      ${S.travellers.map((name,i)=>`<div class="s-row"><span style="font-size:20px">${AVATARS[i]||'👤'}</span><input class="s-input" value="${esc(name)}" placeholder="Name ${i+1}" onchange="renameTraveller(${i},this.value)"></div>`).join('')}
+        <select class="s-rate" onchange="resizeTravellers(+this.value)">${[2,3,4,5,6].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v} people</option>`).join('')}</select></div>
+      ${APP.travellers.map((nm,i)=>`<div class="s-row"><span style="font-size:20px">${AVATARS[i]||'👤'}</span><input class="s-input" value="${esc(nm)}" placeholder="Name ${i+1}" onchange="renameTraveller(${i},this.value)"></div>`).join('')}
     </div>
-    <p class="sec-title">Exchange Rates <span style="font-size:11px;color:var(--slate)">(1 unit = S$)</span></p>
+
+    <p class="sec-title">Currencies <span style="font-size:11px;color:var(--slate)">Active (up to 6) · Rates vs S$</span></p>
     <div class="settings-card">
-      ${['GBP','EUR','DKK'].map(cur=>`<div class="s-row"><span class="s-lbl">${cur} ${CSYM[cur]}</span><input class="s-rate" type="number" step="0.001" min="0" value="${S.rates[cur]}" onchange="updateRate('${cur}',this.value)"></div>`).join('')}
+      ${curs.map(code=>{
+        const cur=ALL_CURRENCIES[code];const rate=trip?.rates?.[code]??cur?.rate??1;
+        return`<div class="s-row"><div style="flex:1"><div style="font-size:14px;font-weight:600">${code} <span style="font-size:13px;color:var(--slate)">${cur?.symbol||''}</span></div><div style="font-size:11px;color:var(--slate)">${cur?.name||''}</div></div><input class="s-rate" type="number" step="0.000001" min="0" value="${rate}" onchange="updateRate('${code}',this.value)" style="width:90px">${code!=='SGD'?`<button onclick="removeCurrency('${code}')" style="background:none;border:none;color:var(--slate);cursor:pointer;font-size:18px;padding:4px">✕</button>`:'<div style="width:28px"></div>'}
+        </div>`;
+      }).join('')}
+      ${curs.length<6?`<div class="s-row" style="justify-content:center"><button onclick="openCurrencyPicker()" style="background:none;border:none;color:var(--navy);cursor:pointer;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;padding:4px">+ Add Currency</button></div>`:`<div style="padding:8px 0;font-size:12px;color:var(--slate);text-align:center">Max 6 currencies. Remove one to add another.</div>`}
     </div>
-    <p class="sec-title">☁️ Live Cloud Sync</p>
-    <div style="background:var(--white);border-radius:14px;padding:12px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(15,35,64,.06)">
-      <p style="font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:12px">Connect to JSONBin.io so all 4 devices sync automatically. <a href="https://jsonbin.io" target="_blank" style="color:var(--navy);font-weight:600">Get free API key →</a></p>
-      <div style="margin-bottom:10px"><div style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">API Key (from jsonbin.io)</div>
-        <input class="finput" type="password" value="${S.cloudApiKey||''}" placeholder="$2a$10$..." style="font-size:14px" onchange="S.cloudApiKey=this.value.trim();save();setSyncStatus(S.cloudApiKey&&S.cloudBinId?'idle':'noconfig')"></div>
-      <div style="margin-bottom:12px"><div style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Trip Code (Bin ID)</div>
-        <input class="finput" type="text" value="${S.cloudBinId||''}" placeholder="64abc123ef456..." style="font-size:14px" onchange="S.cloudBinId=this.value.trim();save()"></div>
-      ${!S.cloudBinId?
-        `<button class="btn-primary" onclick="createBin()" style="margin-top:0">🆕 Create new shared trip</button>
-         <p style="font-size:12px;color:var(--slate);margin-top:8px;line-height:1.5">This creates a shared trip in the cloud. Share the Trip Code (shown after creation) with your group mates.</p>`:
-        `<div style="display:flex;gap:8px;margin-top:4px">
-           <button onclick="syncFromCloud(true)" style="flex:1;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer">🔄 Sync Now</button>
-           <button onclick="syncToCloud()" style="flex:1;padding:11px;background:var(--vellum);color:var(--navy);border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer">📤 Push My Data</button>
-         </div>
-         <div style="background:#EEF6F0;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:12px;color:#2D4A38;line-height:1.6">
-           <strong>Trip Code to share:</strong><br><code style="font-size:13px;letter-spacing:.5px;color:var(--navy)">${S.cloudBinId}</code>
-         </div>`
-      }
+
+    <p class="sec-title">Trip Dates</p>
+    <div class="settings-card">
+      <div class="s-row"><span class="s-lbl">Start Date</span><input type="date" class="s-rate" style="font-size:15px" value="${trip?.start||''}" onchange="updateTripDates('start',this.value)"></div>
+      <div class="s-row"><span class="s-lbl">End Date</span><input type="date" class="s-rate" style="font-size:15px" value="${trip?.end||''}" onchange="updateTripDates('end',this.value)"></div>
+      <div class="s-row"><span class="s-lbl">Trip Name</span><input class="s-input" value="${esc(trip?.name||'')}" oninput="updateTripName(this.value)"></div>
     </div>
-    <p class="sec-title">Data</p>
+
+    <p class="sec-title">Backup</p>
     <div style="background:var(--white);border-radius:14px;padding:12px 16px;box-shadow:0 1px 4px rgba(15,35,64,.06)">
-      <p style="font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:4px">Manual backup — export as JSON if needed.</p>
       <button class="btn-outline" onclick="exportData()">📤 Export backup (JSON)</button>
-      <button class="btn-outline" onclick="document.getElementById('sImport').click()">📥 Import backup (JSON)</button>
-      <input type="file" id="sImport" accept=".json" style="display:none" onchange="importData(this)">
+      <button class="btn-outline" onclick="document.getElementById('sImp').click()">📥 Import backup (JSON)</button>
+      <input type="file" id="sImp" accept=".json" style="display:none" onchange="importData(this)">
     </div>
     <div style="margin-top:14px"><button class="btn-ghost" onclick="clearAll()">🗑️ Clear all data</button></div>
     <div style="height:8px"></div>`;
 }
+
+function updateTripDates(field,val){
+  const trip=currentTrip();if(!trip||!val)return;
+  trip[field]=val;save();renderHeader();toast('Updated ✓');
+}
+function updateTripName(val){
+  const trip=currentTrip();if(!trip||!val.trim())return;
+  trip.name=val.trim();save();renderHeader();
+}
 function resizeTravellers(n){
-  const defaults=['CP','Jon','Eunice','Larry','Member 5','Member 6'];
-  while(S.travellers.length<n)S.travellers.push(defaults[S.travellers.length]||`Member ${S.travellers.length+1}`);
-  if(S.travellers.length>n)S.travellers=S.travellers.slice(0,n);
-  save();renderSettings();toast('Group size updated ✓');
+  const defs=['CP','Jon','Eunice','Larry','Member 5','Member 6'];
+  while(APP.travellers.length<n)APP.travellers.push(defs[APP.travellers.length]||`Member ${APP.travellers.length+1}`);
+  if(APP.travellers.length>n)APP.travellers=APP.travellers.slice(0,n);
+  save();renderContent();toast('Group size updated ✓');
 }
 function renameTraveller(i,v){
-  const old=S.travellers[i];const name=v.trim()||old;if(name===old)return;
-  S.travellers[i]=name;
-  S.expenses.forEach(e=>{if(e.paidBy===old)e.paidBy=name;if(e.addedBy===old)e.addedBy=name;e.sharedAmong=(e.sharedAmong||[]).map(n=>n===old?name:n)});
-  S.itinerary.forEach(it=>{if(it.addedBy===old)it.addedBy=name});
-  if(S.activeUser===old)S.activeUser=name;
-  save();updateHeader();toast('Name updated ✓');
+  const old=APP.travellers[i];const name=v.trim()||old;if(name===old)return;
+  APP.travellers[i]=name;
+  APP.trips.forEach(trip=>{
+    trip.expenses.forEach(e=>{if(e.paidBy===old)e.paidBy=name;if(e.addedBy===old)e.addedBy=name;e.sharedAmong=(e.sharedAmong||[]).map(n=>n===old?name:n)});
+    trip.itinerary.forEach(it=>{if(it.addedBy===old)it.addedBy=name});
+  });
+  if(APP.activeUser===old)APP.activeUser=name;
+  save();renderHeader();toast('Name updated ✓');
 }
-function updateRate(cur,val){const rate=parseFloat(val);if(!isNaN(rate)&&rate>0){S.rates[cur]=rate;S.expenses.forEach(e=>{if(e.currency===cur)e.amountSGD=toSGD(e.amount,cur)});save();toast(`${cur} rate updated ✓`)}}
+function updateRate(code,val){
+  const trip=currentTrip();if(!trip)return;
+  const rate=parseFloat(val);if(!isNaN(rate)&&rate>0){
+    if(!trip.rates)trip.rates={};trip.rates[code]=rate;
+    trip.expenses.forEach(e=>{if(e.currency===code)e.amountSGD=toSGD(e.amount,code,trip)});
+    save();toast(`${code} rate updated ✓`);
+  }
+}
+function removeCurrency(code){
+  const trip=currentTrip();if(!trip||code==='SGD')return;
+  trip.activeCurrencies=trip.activeCurrencies.filter(c=>c!==code);
+  save();renderContent();
+}
+function openCurrencyPicker(){
+  const trip=currentTrip();if(!trip)return;
+  const active=trip.activeCurrencies||['SGD'];
+  // Merge standard + any custom currencies already on the trip
+  const allCodes=Object.keys(ALL_CURRENCIES);
+  const customCodes=(trip.activeCurrencies||[]).filter(c=>!allCodes.includes(c));
+  const displayCodes=[...allCodes,...customCodes];
+  const allCursDisplay={...ALL_CURRENCIES};
+  customCodes.forEach(c=>{if(trip.customCurrencies?.[c])allCursDisplay[c]=trip.customCurrencies[c]});
+  document.getElementById('curList').innerHTML=displayCodes.map(code=>{
+    const cur=allCursDisplay[code]||{symbol:code,name:'Custom'};
+    const isActive=active.includes(code);
+    return`<div class="cur-item ${isActive?'active-cur':''}" onclick="${isActive?'':` addCurrencyToTrip('${code}')`}">
+      <div class="cur-sym">${cur.symbol}</div>
+      <div class="cur-name-wrap"><div class="cur-code">${code} ${isActive?'✓':''}</div><div class="cur-full">${cur.name}</div></div>
+    </div>`;
+  }).join('') + `<div class="cur-item" onclick="closeModal('modalCurrency');openModal('modalCustomCurrency')">
+    <div class="cur-sym" style="color:var(--ember)">+</div>
+    <div class="cur-name-wrap"><div class="cur-code" style="color:var(--ember)">Add Custom Currency</div><div class="cur-full">Not in the list above?</div></div>
+  </div>`;
+  openModal('modalCurrency');
+}
+function saveCustomCurrency(){
+  const trip=currentTrip();if(!trip)return;
+  const code=document.getElementById('ccCode').value.trim().toUpperCase();
+  const symbol=document.getElementById('ccSymbol').value.trim();
+  const name=document.getElementById('ccName').value.trim()||code;
+  const rate=parseFloat(document.getElementById('ccRate').value);
+  if(!code){toast('Please enter a currency code');return}
+  if(!symbol){toast('Please enter a symbol');return}
+  if(!rate||rate<=0){toast('Please enter a valid rate');return}
+  if((trip.activeCurrencies||[]).length>=6){toast('Max 6 currencies — remove one first');return}
+  if(!trip.customCurrencies)trip.customCurrencies={};
+  trip.customCurrencies[code]={symbol,name,rate};
+  if(!trip.activeCurrencies)trip.activeCurrencies=['SGD'];
+  if(!trip.activeCurrencies.includes(code))trip.activeCurrencies.push(code);
+  if(!trip.rates)trip.rates={};trip.rates[code]=rate;
+  save();closeModal('modalCustomCurrency');renderContent();
+  toast(`${code} added ✓`);
+}
+function addCurrencyToTrip(code){
+  const trip=currentTrip();if(!trip)return;
+  if((trip.activeCurrencies||[]).length>=6){toast('Max 6 currencies');return}
+  if(!trip.activeCurrencies)trip.activeCurrencies=['SGD'];
+  if(!trip.activeCurrencies.includes(code)){
+    trip.activeCurrencies.push(code);
+    if(!trip.rates)trip.rates={};
+    trip.rates[code]=ALL_CURRENCIES[code]?.rate||1;
+  }
+  save();closeModal('modalCurrency');renderContent();toast(`${code} added ✓`);
+}
+
 function exportData(){
-  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const blob=new Blob([JSON.stringify(APP,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download=`tripmate-${S.tripName.replace(/\s+/g,'-')}-${today()}.json`;
-  a.click();URL.revokeObjectURL(url);S.hasExported=true;save();
-  toast('Backup exported! Share with your group 📤');
+  a.href=url;a.download=`tripmate-backup-${today()}.json`;a.click();URL.revokeObjectURL(url);
+  APP.hasExported=true;save();toast('Backup exported 📤');
 }
 function importData(input){
   const file=input.files[0];if(!file)return;
-  const r=new FileReader();r.onload=e=>{try{Object.assign(S,JSON.parse(e.target.result));save();updateHeader();renderTab(curTab);toast('Data imported ✓')}catch{toast('Invalid file')}};
+  const r=new FileReader();r.onload=e=>{try{
+    const imp=JSON.parse(e.target.result);
+    // Support both old single-trip format and new multi-trip format
+    if(imp.trips){Object.assign(APP,imp)}
+    else if(imp.itinerary||imp.expenses){
+      // Old format — wrap in a trip
+      const trip=newTripObj(imp.tripName||'Imported Trip',imp.tripStart||'',imp.tripEnd||'');
+      trip.itinerary=imp.itinerary||[];trip.expenses=imp.expenses||[];
+      if(imp.rates)trip.rates=imp.rates;
+      APP.trips.push(trip);APP.activeTripId=trip.id;APP.currentViewTripId=trip.id;
+    }
+    save();renderApp();toast('Data imported ✓');
+  }catch{toast('Invalid file')}};
   r.readAsText(file);input.value='';
 }
-function clearAll(){if(!confirm('Clear all data? Cannot be undone.'))return;S.itinerary=[];S.expenses=[];save();renderTab(curTab);toast('Data cleared')}
-
-// ═══════════════════════════════════
-//  CLOUD SYNC (JSONBin.io)
-// ═══════════════════════════════════
-const CLOUD_BASE='https://api.jsonbin.io/v3';
-let syncTimer=null;
-
-function setSyncStatus(status){
-  const el=document.getElementById('syncStatus');if(!el)return;
-  const map={idle:'',syncing:'🔄 Syncing…',ok:(t)=>`🟢 Synced · ${t}`,error:'🔴 Sync failed — check API key & Trip Code',noconfig:'⚪ Cloud sync not configured'};
-  if(status==='ok'){const t=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});el.textContent=map.ok(t)}
-  else el.textContent=map[status]||'';
+function clearAll(){
+  if(!confirm('Clear ALL data including all trips? Cannot be undone.'))return;
+  APP.trips=[];APP.activeTripId=null;APP.currentViewTripId=null;
+  VIEW='library';save();renderApp();toast('All data cleared');
 }
 
-async function syncToCloud(){
-  if(!S.cloudApiKey||!S.cloudBinId)return;
-  setSyncStatus('syncing');
-  try{
-    const payload={tripName:S.tripName,tripStart:S.tripStart,tripEnd:S.tripEnd,travellers:S.travellers,itinerary:S.itinerary,expenses:S.expenses,rates:S.rates,lastModified:Date.now(),lastModifiedBy:S.activeUser};
-    const r=await fetch(`${CLOUD_BASE}/b/${S.cloudBinId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':S.cloudApiKey},body:JSON.stringify(payload)});
-    if(r.ok){S.cloudLastSync=Date.now();localStorage.setItem('tripmate_sync_v1',JSON.stringify(S));setSyncStatus('ok')}
-    else{setSyncStatus('error');const e=await r.json();console.error('Sync error:',e)}
-  }catch(e){setSyncStatus('error');console.error(e)}
-}
-
-async function syncFromCloud(showToast=true){
-  if(!S.cloudApiKey||!S.cloudBinId){setSyncStatus('noconfig');return}
-  setSyncStatus('syncing');
-  try{
-    const r=await fetch(`${CLOUD_BASE}/b/${S.cloudBinId}/latest`,{headers:{'X-Master-Key':S.cloudApiKey}});
-    if(r.ok){
-      const data=await r.json();const cloud=data.record;
-      const keep={activeUser:S.activeUser,cloudApiKey:S.cloudApiKey,cloudBinId:S.cloudBinId,hasExported:S.hasExported};
-      Object.assign(S,cloud,keep);S.cloudLastSync=Date.now();
-      localStorage.setItem('tripmate_sync_v1',JSON.stringify(S));
-      setSyncStatus('ok');updateHeader();renderTab(curTab);
-      if(showToast)toast(`Synced${cloud.lastModifiedBy?' · last edit by '+cloud.lastModifiedBy:''} ✓`);
-    }else{setSyncStatus('error');if(showToast)toast('Sync failed — check your API key & Trip Code')}
-  }catch(e){setSyncStatus('error');if(showToast)toast('Network error during sync')}
-}
-
-async function createBin(){
-  if(!S.cloudApiKey){toast('Enter your API key first');return}
-  setSyncStatus('syncing');
-  try{
-    const payload={tripName:S.tripName||'TripMate',tripStart:S.tripStart,tripEnd:S.tripEnd,travellers:S.travellers,itinerary:[],expenses:[],rates:S.rates,lastModified:Date.now(),lastModifiedBy:S.activeUser};
-    const r=await fetch(`${CLOUD_BASE}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':S.cloudApiKey,'X-Bin-Name':S.tripName||'TripMate','X-Bin-Private':'false'},body:JSON.stringify(payload)});
-    if(r.ok){
-      const data=await r.json();S.cloudBinId=data.metadata.id;
-      localStorage.setItem('tripmate_sync_v1',JSON.stringify(S));
-      setSyncStatus('ok');renderSettings();
-      toast('✅ Trip created! Share your Trip Code with the group.');
-    }else{setSyncStatus('error');const e=await r.json();toast('Error: '+(e.message||'Could not create trip — check your API key'))}
-  }catch(e){setSyncStatus('error');toast('Network error — check your connection')}
-}
-
-function debouncedSync(){clearTimeout(syncTimer);syncTimer=setTimeout(syncToCloud,2500)}
-
+// ════ INIT ════
 function init(){
   load();
-  // Extend state with cloud fields if missing
-  if(!S.cloudApiKey)S.cloudApiKey='';
-  if(!S.cloudBinId)S.cloudBinId='';
-  if(!S.cloudLastSync)S.cloudLastSync=null;
-  updateHeader();renderItinerary();
-  if(!S.activeUser)setTimeout(openUserModal,400);
-  else if(!S.tripStart)setTimeout(openTripDatesModal,400);
-  // Auto-pull from cloud on open
-  if(S.cloudApiKey&&S.cloudBinId)setTimeout(()=>syncFromCloud(false),1200);
-  else if(!S.cloudApiKey)setTimeout(()=>setSyncStatus('noconfig'),500);
+  // Determine initial view
+  const aTrip=APP.trips.find(t=>t.id===APP.activeTripId&&t.status==='active');
+  if(aTrip){
+    APP.currentViewTripId=APP.activeTripId;
+    VIEW='active';ACTIVE_TAB='itinerary';
+  }else{
+    VIEW='library';
+  }
+  renderApp();
+  // Prompts
+  if(!APP.activeUser)setTimeout(openUserModal,400);
+  else if(VIEW==='active'&&!currentTrip()?.start){}
+  // Cloud sync on open
+  if(APP.cloudApiKey&&APP.cloudBinId)setTimeout(()=>syncFromCloud(false),1200);
 }
 init();
 </script>
