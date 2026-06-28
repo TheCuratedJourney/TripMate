@@ -205,6 +205,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--vellum);color:var(--dark)
 </head>
 <body>
 
+<!-- LIBRARY SETTINGS / JOIN TRIP MODAL -->
+<div id="modalLibSettings" class="modal-overlay" style="display:none">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <span class="modal-title">Join Trip / Settings</span>
+      <button class="modal-close" onclick="closeModal('modalLibSettings')">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="libSettingsBody">
+      <!-- Rendered by renderLibSettingsContent() -->
+    </div>
+  </div>
+</div>
+
 <!-- USER PICKER -->
 <div id="modalUser" class="modal-overlay" style="display:none">
   <div class="modal-sheet">
@@ -735,9 +749,15 @@ function renderApp(){
 function renderHeader(){
   const h=document.getElementById('appHeader');
   if(VIEW==='library'){
-    h.innerHTML=`<div class="hdr-lib">
-      <div class="hdr-lib-title">TripMate ✈</div>
-      <div class="hdr-lib-sub">Your group travel companion</div>
+    h.innerHTML=`<div class="hdr-lib" style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div class="hdr-lib-title">TripMate ✈</div>
+        <div class="hdr-lib-sub">Your group travel companion</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="sync-btn" id="syncBtn" onclick="handleSyncTap()" style="font-size:11px">${APP.cloudApiKey&&APP.cloudBinId?'🟢 Synced':'⚪ Sync'}</button>
+        <div class="user-chip" onclick="openUserModal()"><span>${getAvatar()}</span>&nbsp;<span>${esc(APP.activeUser||'Select me')}</span></div>
+      </div>
     </div>`;
     return;
   }
@@ -800,11 +820,85 @@ function renderContent(){
   }
 }
 
+// ════ LIBRARY SETTINGS SHEET ════
+function openLibSettings(){
+  openModal('modalLibSettings');
+  renderLibSettingsContent();
+}
+function renderLibSettingsContent(){
+  const el=document.getElementById('libSettingsBody');if(!el)return;
+  el.innerHTML=`
+    <div class="info-box" style="margin-bottom:14px">
+      Enter the <strong>API Key</strong> and <strong>Trip Code</strong> shared by your group organiser. Once entered, tap <strong>Sync Now</strong> — all trip data will load automatically.
+    </div>
+    <div class="fg"><label class="flabel">API Key (from jsonbin.io)</label>
+      <input class="finput" id="libApiKey" type="password" value="${esc(APP.cloudApiKey||'')}" placeholder="$2a$10$..." style="font-size:14px">
+    </div>
+    <div class="fg"><label class="flabel">Trip Code (Bin ID)</label>
+      <input class="finput" id="libBinId" type="text" value="${esc(APP.cloudBinId||'')}" placeholder="64abc123..." style="font-size:14px">
+    </div>
+    <button class="btn-primary" onclick="saveLibSync()" style="margin-top:4px">Save &amp; Sync Now</button>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <div class="flabel" style="margin-bottom:8px">Who are you?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${APP.travellers.map((n,i)=>`<div onclick="pickUser(${i});closeModal('modalLibSettings')" style="background:${APP.activeUser===n?'var(--navy)':'var(--vellum)'};color:${APP.activeUser===n?'#fff':'var(--dark)'};border-radius:10px;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600">${AVATARS[i]||'👤'} ${esc(n)}</div>`).join('')}
+      </div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <div class="flabel" style="margin-bottom:8px">Group Members</div>
+      ${APP.travellers.map((nm,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:18px">${AVATARS[i]||'👤'}</span><input class="s-input" value="${esc(nm)}" placeholder="Name ${i+1}" onchange="renameTraveller(${i},this.value);renderLibSettingsContent()" style="font-size:14px"></div>`).join('')}
+      <div style="margin-top:10px"><select style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);-webkit-appearance:none" onchange="resizeTravellers(+this.value);renderLibSettingsContent()">
+        ${[2,3,4,5,6].map(v=>`<option value="${v}" ${v===APP.travellers.length?'selected':''}>${v} people</option>`).join('')}
+      </select></div>
+    </div>
+  `;
+}
+async function saveLibSync(){
+  const key=document.getElementById('libApiKey')?.value.trim();
+  const bin=document.getElementById('libBinId')?.value.trim();
+  if(!key){toast('Please enter your API Key');return}
+  if(!bin){toast('Please enter your Trip Code');return}
+  APP.cloudApiKey=key;APP.cloudBinId=bin;
+  save();
+  toast('Saved — syncing now...');
+  await syncFromCloud(true);
+  // If a trip loaded, open it
+  const aTrip=APP.trips.find(t=>t.id===APP.activeTripId&&t.status==='active');
+  if(aTrip){
+    APP.currentViewTripId=APP.activeTripId;
+    VIEW='active';ACTIVE_TAB='itinerary';
+    closeModal('modalLibSettings');
+    renderApp();
+  }else{
+    closeModal('modalLibSettings');
+    renderApp();
+  }
+}
+
 // ════ LIBRARY VIEW ════
 function renderLibraryHTML(){
   const active=APP.trips.filter(t=>t.status==='active');
   const archived=APP.trips.filter(t=>t.status==='archived').sort((a,b)=>(b.archivedAt||0)-(a.archivedAt||0));
-  let html=`<button class="new-trip-btn" onclick="openNewTripModal()">+ Plan a New Trip</button>`;
+
+  // If no cloud config yet, show a prominent join banner at the top
+  const joinBanner=(!APP.cloudApiKey||!APP.cloudBinId)?`
+    <div style="background:var(--navy);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer" onclick="openLibSettings()">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:28px">☁️</span>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:15px;color:#fff;margin-bottom:3px">Join your group's trip</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.5">Tap here to enter your API Key and Trip Code to sync with CP, Jon, Eunice and Larry</div>
+        </div>
+        <span style="color:rgba(255,255,255,.5);font-size:20px;margin-left:auto">›</span>
+      </div>
+    </div>`:
+    `<div style="background:#EEF6F0;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;cursor:pointer" onclick="openLibSettings()">
+      <span style="font-size:18px">🟢</span>
+      <div style="flex:1;font-size:13px;color:#2D4A38">Cloud sync active — tap to manage</div>
+      <span style="color:#7B8794;font-size:16px">›</span>
+    </div>`;
+
+  let html=joinBanner+`<button class="new-trip-btn" onclick="openNewTripModal()">+ Plan a New Trip</button>`;
   if(active.length){
     html+=`<div class="lib-trips-section"><div class="lib-section-title">Active Trips</div>`;
     active.forEach(t=>{
@@ -1407,9 +1501,12 @@ function init(){
     VIEW='library';
   }
   renderApp();
-  // Prompts
-  if(!APP.activeUser)setTimeout(openUserModal,400);
-  else if(VIEW==='active'&&!currentTrip()?.start){}
+  // Prompts — on fresh install, show the join/settings sheet
+  if(!APP.activeUser&&VIEW==='library'){
+    setTimeout(()=>{openLibSettings()},400);
+  } else if(!APP.activeUser){
+    setTimeout(openUserModal,400);
+  }
   // Cloud sync on open
   if(APP.cloudApiKey&&APP.cloudBinId)setTimeout(()=>syncFromCloud(false),1200);
 }
